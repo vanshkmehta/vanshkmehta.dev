@@ -1,0 +1,139 @@
+---
+import { NAV, SITE } from "../data/site";
+import { navIsActive } from "../lib/utils";
+import SocialIcons from "./SocialIcons.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const path = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-line/80 bg-canvas/90 backdrop-blur-md">
+  <div class="h-px w-full bg-accent" aria-hidden="true"></div>
+  <div class="wrap flex h-14 min-w-0 items-center gap-3 md:h-16 md:gap-5">
+    <a href="/" class="flex min-w-0 shrink-0 items-center gap-2.5 no-underline">
+      <span class="grid size-8 place-items-center border border-accent/50 bg-accent-soft font-mono text-[11px] font-semibold tracking-wider text-accent">
+        VM
+      </span>
+      <span class="hidden font-mono text-[13px] tracking-tight text-accent sm:inline">
+        {SITE.shortName}<span class="text-muted">.dev</span>
+      </span>
+    </a>
+
+    <nav class="ml-1 hidden min-w-0 items-center md:flex" aria-label="Primary">
+      {
+        NAV.map((item) => {
+          const active = navIsActive(item.href, path);
+          return (
+            <a
+              href={item.href}
+              class:list={[
+                "shrink-0 px-2 py-1.5 text-[13px] font-medium transition-colors lg:px-2.5",
+                active ? "text-ink" : "text-muted hover:text-ink",
+              ]}
+              aria-current={active ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <div class="ml-auto flex shrink-0 items-center gap-1">
+      <SocialIcons compact class="hidden lg:flex" />
+      <ThemeToggle />
+      <button
+        type="button"
+        class="inline-flex size-9 items-center justify-center border border-line text-ink md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-menu-toggle
+      >
+        <span class="sr-only">Open menu</span>
+        <svg class="icon-open size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+        <svg class="icon-close hidden size-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav
+    id="mobile-nav"
+    class="wrap hidden border-t border-line py-3 md:hidden"
+    aria-label="Mobile"
+    hidden
+  >
+    <ul class="flex flex-col gap-1 pb-3">
+      {
+        NAV.map((item) => {
+          const active = navIsActive(item.href, path);
+          return (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  "block px-2 py-2 text-sm font-medium",
+                  active ? "bg-accent-soft text-ink" : "text-muted hover:text-ink",
+                ]}
+                aria-current={active ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+    <SocialIcons />
+  </nav>
+</header>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  header:has([data-menu-toggle][aria-expanded="true"]) .icon-open {
+    display: none;
+  }
+  header:has([data-menu-toggle][aria-expanded="true"]) .icon-close {
+    display: block;
+  }
+</style>
+
+<script>
+  function bindMenu() {
+    const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+    const panel = document.getElementById("mobile-nav");
+    if (!toggle || !panel) return;
+
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      panel.hidden = !open;
+      panel.classList.toggle("hidden", !open);
+      const label = toggle.querySelector(".sr-only");
+      if (label) label.textContent = open ? "Close menu" : "Open menu";
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
+  }
+
+  bindMenu();
+</script>

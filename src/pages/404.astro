@@ -1,0 +1,17 @@
+---
+import PageLayout from "../layouts/PageLayout.astro";
+---
+
+<PageLayout title="Not found" description="No page at this address.">
+  <section class="wrap py-24">
+    <p class="caption text-accent">404</p>
+    <h1 class="display mt-4">No such address.</h1>
+    <div class="rule-cyan mt-5"></div>
+    <p class="lede mt-6">The mapping is empty. Try the notes, the course, or go home.</p>
+    <p class="mt-8 flex flex-wrap gap-4 font-mono text-sm">
+      <a class="text-accent hover:underline" href="/">Home</a>
+      <a class="text-accent hover:underline" href="/notes">Notes</a>
+      <a class="text-accent hover:underline" href="/course">Course</a>
+    </p>
+  </section>
+</PageLayout>

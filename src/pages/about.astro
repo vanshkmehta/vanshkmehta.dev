@@ -1,0 +1,102 @@
+---
+import SocialIcons from "../components/SocialIcons.astro";
+import { SITE } from "../data/site";
+import PageLayout from "../layouts/PageLayout.astro";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.name,
+  url: SITE.url,
+  email: SITE.email,
+  jobTitle: SITE.role,
+  worksFor: { "@type": "Organization", name: SITE.employer },
+  sameAs: [SITE.youtube, SITE.github, SITE.linkedin],
+};
+---
+
+<PageLayout
+  title="About"
+  description="Backend engineer at Jio Platforms. Public CS curriculum on YouTube. Mumbai."
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="wrap page-head">
+    <p class="section-kicker">About</p>
+    <h1 class="display mt-5">{SITE.name}</h1>
+    <p class="mt-3 font-mono text-sm text-accent">{SITE.tagline}</p>
+    <div class="rule-cyan mt-5"></div>
+  </section>
+
+  <section class="wrap grid min-w-0 gap-10 pb-16 md:pb-20 lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:gap-14">
+    <div class="max-w-[42rem] min-w-0 space-y-6 text-[1.02rem] leading-relaxed text-muted">
+      <p class="text-ink">
+        Backend engineer at Jio Platforms (Jio Cloud / India AI), Mumbai. Java, Spring Boot, distributed systems. 2.5+ years.
+      </p>
+      <p>
+        I design infrastructure that has to be wrong in public: quota checks that fail before provision, queues that do not block the caller, replication that has a known recovery path. The rest of this site is how I wish that kind of work had been taught.
+      </p>
+      <p>
+        Currently filming Season 1 of a public CS curriculum — whiteboard, then interview problems, then a small project you can run. Notes live here. YouTube is the class.
+      </p>
+
+      <h2 class="title pt-4 text-ink">Jio Platforms</h2>
+      <p class="font-mono text-xs text-faint">Software Development Engineer I · Dec 2023 – present</p>
+      <ul class="list-disc space-y-2 pl-5 marker:text-accent">
+        <li>
+          Quota validation framework for Jio Cloud across ROS, HCI, GCP, and internal IaaS. Logical and physical checks before provision, so over-commit fails at the source instead of after.
+        </li>
+        <li>
+          Central engine on order types — VMs, block storage, security groups, HSM — which cut post-provisioning failure orders by about 40% in the numbers we tracked.
+        </li>
+        <li>
+          Async order-processing pipeline on RabbitMQ for compute, storage, and networking across hybrid cloud.
+        </li>
+        <li>
+          OPS logging with end-to-end traces on provisioning failures. Incident close time dropped about 60% on the paths we instrumented.
+        </li>
+        <li>
+          Disaster recovery: REST API work and asynchronous replication workflows with infrastructure teams. Not a one-person feature; I was a core contributor.
+        </li>
+        <li>
+          Scheduled PostgreSQL–Oracle sync so order state (Postgres) and provisioning state (Oracle) do not drift.
+        </li>
+      </ul>
+      <p class="font-mono text-xs leading-relaxed text-faint">
+        Java 17 · Spring Boot · Spring MVC · PostgreSQL · Oracle · RabbitMQ · Redis · Hibernate/JPA · REST · Maven · Linux
+      </p>
+
+      <h2 class="title pt-4 text-ink">Stack</h2>
+      <p>
+        Java is the primary language. Spring Boot, Spring MVC, Spring Data JPA, Hibernate. PostgreSQL, Oracle, Redis, RabbitMQ. Docker, Kubernetes, Maven, Git. Distributed systems, async processing, event-driven design. Spring AI and the Claude API on the side project, not on the day job.
+      </p>
+
+      <h2 class="title pt-4 text-ink">Education</h2>
+      <p>
+        B.E. Computer Science, Honours in Data Science — PVGCOE, Nashik (Pune Vidhyarthi Griha’s College of Engineering), Jun 2019 – Aug 2023. CGPA 8.60.
+      </p>
+      <p>
+        Completed the Certified Kubernetes Application Developer (CKAD) course on Coursera. That is the course, not the Linux Foundation exam.
+      </p>
+
+      <h2 class="title pt-4 text-ink">Elsewhere</h2>
+      <p>
+        Earlier: Kavach, an Android SOS app (Java, XML, Firebase). Gold medal at Anveshana 2023; shortlisted for the Government of India Tech Innovation Awards. It is not a curriculum build and it is not listed under Projects.
+      </p>
+      <p>
+        <a class="text-accent hover:underline" href="/resume.pdf">Resume (PDF)</a>
+      </p>
+    </div>
+
+    <aside class="card h-fit min-w-0 p-6">
+      <p class="caption text-faint">Now</p>
+      <p class="mt-3 text-sm leading-relaxed">Filming Season 1 · Memory &amp; Low-Level</p>
+      <p class="caption mt-6 text-faint">Mail</p>
+      <a class="mt-2 block text-sm text-accent hover:underline break-all" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <p class="caption mt-6 text-faint">Socials</p>
+      <div class="mt-3 min-w-0">
+        <SocialIcons />
+      </div>
+    </aside>
+  </section>
+</PageLayout>

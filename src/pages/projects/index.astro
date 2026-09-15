@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "../../components/ProjectCard.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+const projects = (await getCollection("projects")).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+---
+
+<PageLayout
+  title="Projects"
+  description="Builds from the curriculum and a solo backend currently in development. No decorative dashboards — curl, CLIs, and pipelines."
+>
+  <section class="wrap page-head">
+    <p class="section-kicker">Builds</p>
+    <h1 class="display mt-5">Projects</h1>
+    <div class="rule-cyan mt-5"></div>
+    <p class="lede mt-6">
+      Curriculum builds are small and runnable. The permission engine and hex inspector have no UI — terminal only. The sales intelligence platform is a separate, in-development system.
+    </p>
+  </section>
+  <section class="wrap pb-16 md:pb-20">
+    <div class="grid min-w-0 gap-5 md:grid-cols-2">
+      {
+        projects.map((project) => (
+          <ProjectCard project={project} />
+        ))
+      }
+    </div>
+  </section>
+</PageLayout>

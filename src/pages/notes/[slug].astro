@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from "astro:content";
+import ModeChips from "../../components/ModeChips.astro";
+import { formatDate } from "../../lib/utils";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+export async function getStaticPaths() {
+  const notes = await getCollection("notes");
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+
+<PageLayout
+  title={note.data.title}
+  description={note.data.description}
+  ogType="article"
+  pubDate={note.data.pubDate}
+>
+  <article class="wrap py-16 md:py-20">
+    <header class="max-w-[70ch] min-w-0">
+      <p class="caption text-accent">
+        S{note.data.season} · {note.data.seasonTitle}
+      </p>
+      <h1 class="display mt-4">
+        {note.data.topic}
+      </h1>
+      <p class="lede mt-4">{note.data.description}</p>
+      <div class="mt-5 flex min-w-0 flex-wrap items-center gap-3">
+        <ModeChips />
+        <span class="font-mono text-[11px] text-faint">{formatDate(note.data.pubDate)}</span>
+        <span class="font-mono text-[11px] text-faint">{note.data.level}</span>
+      </div>
+    </header>
+    <div class="prose-note mt-12 max-w-[70ch]">
+      <Content />
+    </div>
+  </article>
+</PageLayout>

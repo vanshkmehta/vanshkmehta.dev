@@ -1,0 +1,68 @@
+---
+import ModeChips from "../../components/ModeChips.astro";
+import { getSeason } from "../../data/seasons";
+import { SITE } from "../../data/site";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+const season = getSeason(1);
+if (!season) throw new Error("Season 1 missing");
+const published = season.topics.filter((t) => t.noteId).length;
+---
+
+<PageLayout
+  title={`${season.code} ${season.title}`}
+  description={season.pitch}
+>
+  <section class="wrap page-head">
+    <p class="caption text-accent">
+      {season.code} · filming · {published}/{season.topics.length} notes
+    </p>
+    <h1 class="display mt-4">{season.title}</h1>
+    <div class="rule-cyan mt-5"></div>
+    <p class="lede mt-6">{season.pitch}</p>
+    <ModeChips class="mt-6" />
+    <p class="mt-6 max-w-[40rem] text-sm leading-relaxed text-muted">
+      Thin index on purpose. Full write-ups ship as topic notes when the Build is out. Playlist:
+      <a class="text-accent hover:underline break-all" href={SITE.youtube}>youtube.com/@vanshkmehta</a>
+      <span class="text-faint"> · TODO: season playlist URL</span>
+    </p>
+  </section>
+
+  <section class="wrap pb-16 md:pb-20">
+    <ol class="grid min-w-0 gap-3">
+      {
+        season.topics.map((topic, i) => {
+          const href = topic.noteId ? `/notes/${topic.noteId}` : undefined;
+          return (
+            <li class="min-w-0">
+              {href ? (
+                <a href={href} class="card card-hover flex min-w-0 flex-col gap-4 p-6 no-underline md:flex-row md:items-start">
+                  <span class="shrink-0 font-mono text-sm text-accent">E{i + 1}</span>
+                  <div class="min-w-0 flex-1">
+                    <h2 class="title text-ink">{topic.title}</h2>
+                    <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
+                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
+                  </div>
+                  <ModeChips />
+                </a>
+              ) : (
+                <article class="card flex min-w-0 flex-col gap-4 border-dashed p-6 md:flex-row md:items-start">
+                  <span class="shrink-0 font-mono text-sm text-faint">E{i + 1}</span>
+                  <div class="min-w-0 flex-1">
+                    <h2 class="title">{topic.title}</h2>
+                    <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
+                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
+                  </div>
+                  <p class="caption shrink-0 text-gold">Queued</p>
+                </article>
+              )}
+            </li>
+          );
+        })
+      }
+    </ol>
+    <p class="mt-10">
+      <a class="caption text-accent hover:underline" href="/course">← All seasons</a>
+    </p>
+  </section>
+</PageLayout>

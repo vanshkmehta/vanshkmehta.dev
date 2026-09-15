@@ -1,0 +1,80 @@
+---
+import { getCollection } from "astro:content";
+import NoteCard from "../../components/NoteCard.astro";
+import { seasons } from "../../data/seasons";
+import { formatDate } from "../../lib/utils";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+const notes = await getCollection("notes");
+const bySeason = seasons
+  .map((season) => ({
+    season,
+    notes: notes
+      .filter((n) => n.data.season === season.id)
+      .sort((a, b) => a.data.topic.localeCompare(b.data.topic)),
+  }))
+  .filter((group) => group.season.status === "filming" || group.notes.length > 0);
+---
+
+<PageLayout
+  title="Notes"
+  description="Topic-level study guides for the CS curriculum. One post per topic: whiteboard, questions, build."
+>
+  <section class="wrap page-head">
+    <p class="section-kicker">Study guides</p>
+    <h1 class="display mt-5">Notes</h1>
+    <div class="rule-cyan mt-5"></div>
+    <p class="lede mt-6">
+      One note per topic — not per video. Each post stitches the trilogy: board, interview problems, then the build. Drop a Markdown file in <code class="font-mono text-sm text-accent break-all">src/content/notes</code> to add another.
+    </p>
+  </section>
+
+  <section class="wrap space-y-16 pb-16 md:pb-20">
+    {
+      bySeason.map(({ season, notes: seasonNotes }) => (
+        <section class="min-w-0">
+          <div class="flex min-w-0 flex-wrap items-end justify-between gap-3 border-b border-line pb-3">
+            <h2 class="title min-w-0">
+              <span class="font-mono text-sm text-accent">{season.code}</span>
+              <span class="ml-3">{season.title}</span>
+            </h2>
+            <a class="caption shrink-0 text-muted hover:text-accent" href={`/course/${season.slug}`}>
+              Season page
+            </a>
+          </div>
+
+          {seasonNotes.length > 0 ? (
+            <div class="mt-6 grid min-w-0 gap-4 md:grid-cols-2">
+              {seasonNotes.map((note) => (
+                <NoteCard
+                  href={`/notes/${note.id}`}
+                  kicker={note.data.episodeIds.join(" · ")}
+                  title={note.data.topic}
+                  description={note.data.description}
+                  meta={formatDate(note.data.pubDate)}
+                  showModes
+                />
+              ))}
+            </div>
+          ) : (
+            <p class="mt-6 text-sm text-muted">No notes yet for this season.</p>
+          )}
+
+          {season.topics.some((t) => !t.noteId) && (
+            <ul class="mt-4 grid min-w-0 gap-2">
+              {season.topics
+                .filter((t) => !t.noteId)
+                .map((topic) => (
+                  <li class="card min-w-0 border-dashed px-5 py-4">
+                    <p class="title">{topic.title}</p>
+                    <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
+                    <p class="mt-2 font-mono text-[11px] text-gold">Note in outline</p>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </section>
+      ))
+    }
+  </section>
+</PageLayout>

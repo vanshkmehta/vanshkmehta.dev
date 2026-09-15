@@ -1,0 +1,154 @@
+---
+import { getCollection } from "astro:content";
+import NoteCard from "../components/NoteCard.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import SeasonTerminal from "../components/SeasonTerminal.astro";
+import { seasons } from "../data/seasons";
+import { SITE } from "../data/site";
+import { formatDate } from "../lib/utils";
+import PageLayout from "../layouts/PageLayout.astro";
+
+const notes = (await getCollection("notes")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const projects = await getCollection("projects");
+const featured = projects.find((p) => p.data.featured) ?? projects[0];
+
+const publishedIds = new Set(notes.map((n) => n.id));
+const s1 = seasons[0];
+const upcomingTopics = s1.topics.filter((t) => !t.noteId || !publishedIds.has(t.noteId));
+
+const latestNotes = [
+  ...notes.slice(0, 3).map((note) => ({
+    pending: false as const,
+    href: `/notes/${note.id}`,
+    kicker: `S${note.data.season} · ${note.data.seasonTitle}`,
+    title: note.data.topic,
+    description: note.data.description,
+    meta: formatDate(note.data.pubDate),
+  })),
+];
+
+for (const topic of upcomingTopics) {
+  if (latestNotes.length >= 3) break;
+  latestNotes.push({
+    pending: true,
+    href: "/course/s1",
+    kicker: `S1 · ${s1.title}`,
+    title: topic.title,
+    description: topic.summary,
+    meta: "Note in outline",
+  });
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.name,
+  url: SITE.url,
+  email: SITE.email,
+  jobTitle: SITE.role,
+  worksFor: { "@type": "Organization", name: SITE.employer },
+  address: { "@type": "PostalAddress", addressLocality: "Mumbai", addressCountry: "IN" },
+  sameAs: [SITE.youtube, SITE.github, SITE.linkedin],
+};
+---
+
+<PageLayout>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="hero-atmosphere">
+    <div class="wrap grid min-w-0 items-center gap-10 py-16 md:py-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16 lg:py-24">
+      <div class="min-w-0">
+        <p class="caption text-accent">
+          {SITE.role} · {SITE.employer} · Mumbai
+        </p>
+        <p class="mt-4 text-sm tracking-wide text-muted">{SITE.tagline}</p>
+        <div class="rule-cyan mt-5"></div>
+        <h1 class="display mt-6 max-w-xl">
+          I teach the CS degree the way I wish I got it — board first, interview problems next, then a small real project you can run.
+        </h1>
+        <p class="lede mt-6">
+          Notes and builds live here. YouTube is the class. Currently filming Season 1: Memory &amp; Low-Level.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-2">
+          <a class="btn-primary" href="/course">Watch the course</a>
+          <a class="btn-ghost" href="/notes">Read the notes</a>
+          <a class="btn-ghost" href="/projects">See the builds</a>
+        </div>
+      </div>
+      <div class="min-w-0 lg:justify-self-stretch">
+        <SeasonTerminal />
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap flex flex-col gap-16 py-16 md:gap-20 md:py-20">
+    <section class="min-w-0">
+      <p class="section-kicker">01 / Notes</p>
+      <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
+        <h2 class="title">Latest notes</h2>
+        <a class="caption text-accent hover:underline" href="/notes">All notes</a>
+      </div>
+      <div class="mt-8 grid min-w-0 gap-4 md:grid-cols-3">
+        {
+          latestNotes.map((item) => (
+            <NoteCard
+              href={item.href}
+              kicker={item.kicker}
+              title={item.title}
+              description={item.description}
+              meta={item.meta}
+              pending={item.pending}
+              showModes
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      featured && (
+        <section class="min-w-0">
+          <p class="section-kicker">02 / Build</p>
+          <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
+            <h2 class="title">Featured project</h2>
+            <a class="caption text-accent hover:underline" href="/projects">All projects</a>
+          </div>
+          <div class="mt-8 min-w-0">
+            <ProjectCard project={featured} featured />
+          </div>
+        </section>
+      )
+    }
+
+    <section class="min-w-0">
+      <p class="section-kicker">03 / Class</p>
+      <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
+        <h2 class="title">Latest video</h2>
+        <a class="caption text-accent hover:underline" href={SITE.youtube}>YouTube</a>
+      </div>
+      <a
+        href={SITE.youtube}
+        class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="flex min-h-40 min-w-0 items-center justify-center border-b border-line bg-[var(--canvas)] px-6 py-10 lg:border-r lg:border-b-0">
+          <div class="min-w-0 text-center">
+            <p class="caption text-accent">S1E1.1 · Whiteboard</p>
+            <p class="mt-3 truncate font-mono text-sm text-muted">▶ youtube.com/@vanshkmehta</p>
+            <p class="mt-2 text-xs text-faint">TODO: episode URL</p>
+          </div>
+        </div>
+        <div class="min-w-0 p-6 sm:p-8">
+          <h3 class="title text-ink">Bitwise Manipulation — Whiteboard</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Season 1 is being filmed. This card points at the channel until episode URLs exist. Board first; the note and the build follow.
+          </p>
+          <p class="mt-6 font-mono text-xs text-accent">Watch on YouTube →</p>
+        </div>
+      </a>
+    </section>
+  </div>
+</PageLayout>
