@@ -6,8 +6,8 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://vanshkmehta.dev",
   trailingSlash: "never",
-  // Static HTML for Cloudflare Pages. Do not add @astrojs/cloudflare —
-  // that adapter emits a Worker and makes Pages run `wrangler deploy`.
+  // Static HTML. wrangler.jsonc uploads ./dist as Workers assets (no Worker
+  // main). Do not add @astrojs/cloudflare — that adapter emits a Worker script.
   output: "static",
   integrations: [
     mdx(),
