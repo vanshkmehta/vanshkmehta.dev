@@ -16,7 +16,7 @@ const props = Astro.props;
 <BaseLayout {...props}>
   <slot name="head" slot="head" />
   <Header />
-  <main id="content">
+  <main id="content" class="min-w-0">
     <slot />
   </main>
   <Footer />

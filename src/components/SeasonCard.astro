@@ -13,26 +13,26 @@ const topicCount = season.topics.length;
 
 {
   href ? (
-    <a href={href} class="card-hover flex h-full flex-col border border-line bg-canvas-elevated p-5 no-underline">
-      <div class="flex items-start justify-between gap-3">
+    <a href={href} class="card card-hover flex h-full flex-col p-6 no-underline">
+      <div class="flex items-center justify-between gap-3">
         <p class="font-mono text-xs text-accent">{season.code}</p>
         <span class="mode-chip mode-chip-whiteboard">Filming</span>
       </div>
-      <h3 class="mt-4 text-lg font-medium tracking-tight text-ink">{season.title}</h3>
-      <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{season.pitch}</p>
-      <ModeChips class="mt-4" />
+      <h3 class="title mt-4 line-clamp-2 text-ink">{season.title}</h3>
+      <p class="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{season.pitch}</p>
+      <ModeChips class="mt-5" />
       <p class="mt-3 font-mono text-[11px] text-faint">
         {topicCount} topics · season page
       </p>
     </a>
   ) : (
-    <article class="flex h-full flex-col border border-line bg-canvas-elevated/70 p-5">
-      <div class="flex items-start justify-between gap-3">
+    <article class="card flex h-full flex-col p-6 opacity-90">
+      <div class="flex items-center justify-between gap-3">
         <p class="font-mono text-xs text-faint">{season.code}</p>
-        <span class="font-mono text-[10px] tracking-wide text-faint uppercase">Coming after S1</span>
+        <span class="caption text-faint">Queued</span>
       </div>
-      <h3 class="mt-4 text-lg font-medium tracking-tight text-ink">{season.title}</h3>
-      <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{season.pitch}</p>
+      <h3 class="title mt-4 line-clamp-2 text-ink">{season.title}</h3>
+      <p class="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{season.pitch}</p>
     </article>
   )
 }

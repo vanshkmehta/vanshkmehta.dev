@@ -3,18 +3,18 @@ const bits = [0, 1, 1, 0, 1];
 const labels = ["READ", "WRITE", "EXEC", "AUDIT", "ADMIN"];
 ---
 
-<figure class="not-prose my-8 border border-line bg-canvas-elevated">
-  <figcaption class="border-b border-line px-4 py-2 font-mono text-[11px] tracking-widest text-faint uppercase">
+<figure class="not-prose my-8 min-w-0 overflow-hidden border border-line bg-canvas-elevated">
+  <figcaption class="border-b border-line px-4 py-2 font-mono text-[11px] tracking-wide text-faint uppercase">
     Word as a row of flags — index 0 is LSB
   </figcaption>
-  <div class="overflow-x-auto p-4">
-    <div class="flex min-w-[28rem] gap-2">
+  <div class="p-4">
+    <div class="grid grid-cols-5 gap-2">
       {bits.map((bit, i) => (
-        <div class="flex flex-1 flex-col items-center gap-2">
-          <span class="font-mono text-[10px] text-faint">{labels[i]}</span>
+        <div class="flex min-w-0 flex-col items-center gap-2">
+          <span class="truncate font-mono text-[10px] text-faint">{labels[i]}</span>
           <span
             class:list={[
-              "grid aspect-square w-full max-w-16 place-items-center border font-mono text-lg",
+              "grid aspect-square w-full max-w-14 place-items-center border font-mono text-lg",
               bit === 1 ? "border-accent bg-accent-soft text-accent" : "border-line text-faint",
             ]}
           >
@@ -24,7 +24,7 @@ const labels = ["READ", "WRITE", "EXEC", "AUDIT", "ADMIN"];
         </div>
       ))}
     </div>
-    <p class="mt-4 font-mono text-xs text-muted">
+    <p class="mt-4 break-all font-mono text-xs text-muted">
       value = 0b10110 = 22 · test EXEC: (value &amp; 1&lt;&lt;2) != 0 → yes
     </p>
   </div>

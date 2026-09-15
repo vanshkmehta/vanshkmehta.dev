@@ -22,22 +22,22 @@ const { Content } = await render(note);
   ogType="article"
   pubDate={note.data.pubDate}
 >
-  <article class="wrap py-16 sm:py-20">
-    <header class="max-w-[72ch]">
-      <p class="font-mono text-xs tracking-[0.16em] text-accent uppercase">
+  <article class="wrap py-16 md:py-20">
+    <header class="max-w-[70ch] min-w-0">
+      <p class="caption text-accent">
         S{note.data.season} · {note.data.seasonTitle}
       </p>
-      <h1 class="mt-4 text-3xl font-medium tracking-tight text-balance sm:text-4xl">
+      <h1 class="display mt-4">
         {note.data.topic}
       </h1>
-      <p class="mt-4 text-muted">{note.data.description}</p>
-      <div class="mt-5 flex flex-wrap items-center gap-3">
+      <p class="lede mt-4">{note.data.description}</p>
+      <div class="mt-5 flex min-w-0 flex-wrap items-center gap-3">
         <ModeChips />
         <span class="font-mono text-[11px] text-faint">{formatDate(note.data.pubDate)}</span>
         <span class="font-mono text-[11px] text-faint">{note.data.level}</span>
       </div>
     </header>
-    <div class="prose-note mt-12 max-w-[72ch]">
+    <div class="prose-note mt-12 max-w-[70ch]">
       <Content />
     </div>
   </article>

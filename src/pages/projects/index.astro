@@ -13,14 +13,16 @@ const projects = (await getCollection("projects")).sort((a, b) => {
   title="Projects"
   description="Builds from the curriculum and a solo backend currently in development. No decorative dashboards — curl, CLIs, and pipelines."
 >
-  <section class="wrap py-16 sm:py-20">
+  <section class="wrap page-head">
     <p class="section-kicker">Builds</p>
-    <h1 class="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">Projects</h1>
+    <h1 class="display mt-5">Projects</h1>
     <div class="rule-cyan mt-5"></div>
-    <p class="mt-6 max-w-[46rem] leading-relaxed text-muted">
+    <p class="lede mt-6">
       Curriculum builds are small and runnable. The permission engine and hex inspector have no UI — terminal only. The sales intelligence platform is a separate, in-development system.
     </p>
-    <div class="mt-12 grid gap-5 md:grid-cols-2">
+  </section>
+  <section class="wrap pb-16 md:pb-20">
+    <div class="grid min-w-0 gap-5 md:grid-cols-2">
       {
         projects.map((project) => (
           <ProjectCard project={project} />

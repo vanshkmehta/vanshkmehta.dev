@@ -20,61 +20,61 @@ const bySeason = seasons
   title="Notes"
   description="Topic-level study guides for the CS curriculum. One post per topic: whiteboard, questions, build."
 >
-  <section class="wrap py-16 sm:py-20">
+  <section class="wrap page-head">
     <p class="section-kicker">Study guides</p>
-    <h1 class="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">Notes</h1>
+    <h1 class="display mt-5">Notes</h1>
     <div class="rule-cyan mt-5"></div>
-    <p class="mt-6 max-w-[46rem] leading-relaxed text-muted">
-      One note per topic — not per video. Each post stitches the trilogy: board, interview problems, then the build. Drop a Markdown file in <code class="font-mono text-sm text-accent">src/content/notes</code> to add another.
+    <p class="lede mt-6">
+      One note per topic — not per video. Each post stitches the trilogy: board, interview problems, then the build. Drop a Markdown file in <code class="font-mono text-sm text-accent break-all">src/content/notes</code> to add another.
     </p>
+  </section>
 
-    <div class="mt-14 space-y-16">
-      {
-        bySeason.map(({ season, notes: seasonNotes }) => (
-          <section>
-            <div class="flex flex-wrap items-end justify-between gap-3 border-b border-line pb-3">
-              <h2 class="text-xl font-medium tracking-tight">
-                <span class="font-mono text-sm text-accent">{season.code}</span>
-                <span class="ml-3">{season.title}</span>
-              </h2>
-              <a class="font-mono text-[11px] text-muted hover:text-accent" href={`/course/${season.slug}`}>
-                Season page
-              </a>
+  <section class="wrap space-y-16 pb-16 md:pb-20">
+    {
+      bySeason.map(({ season, notes: seasonNotes }) => (
+        <section class="min-w-0">
+          <div class="flex min-w-0 flex-wrap items-end justify-between gap-3 border-b border-line pb-3">
+            <h2 class="title min-w-0">
+              <span class="font-mono text-sm text-accent">{season.code}</span>
+              <span class="ml-3">{season.title}</span>
+            </h2>
+            <a class="caption shrink-0 text-muted hover:text-accent" href={`/course/${season.slug}`}>
+              Season page
+            </a>
+          </div>
+
+          {seasonNotes.length > 0 ? (
+            <div class="mt-6 grid min-w-0 gap-4 md:grid-cols-2">
+              {seasonNotes.map((note) => (
+                <NoteCard
+                  href={`/notes/${note.id}`}
+                  kicker={note.data.episodeIds.join(" · ")}
+                  title={note.data.topic}
+                  description={note.data.description}
+                  meta={formatDate(note.data.pubDate)}
+                  showModes
+                />
+              ))}
             </div>
+          ) : (
+            <p class="mt-6 text-sm text-muted">No notes yet for this season.</p>
+          )}
 
-            {seasonNotes.length > 0 ? (
-              <div class="mt-6 grid gap-4 md:grid-cols-2">
-                {seasonNotes.map((note) => (
-                  <NoteCard
-                    href={`/notes/${note.id}`}
-                    kicker={note.data.episodeIds.join(" · ")}
-                    title={note.data.topic}
-                    description={note.data.description}
-                    meta={formatDate(note.data.pubDate)}
-                    showModes
-                  />
+          {season.topics.some((t) => !t.noteId) && (
+            <ul class="mt-4 grid min-w-0 gap-2">
+              {season.topics
+                .filter((t) => !t.noteId)
+                .map((topic) => (
+                  <li class="card min-w-0 border-dashed px-5 py-4">
+                    <p class="title">{topic.title}</p>
+                    <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
+                    <p class="mt-2 font-mono text-[11px] text-gold">Note in outline</p>
+                  </li>
                 ))}
-              </div>
-            ) : (
-              <p class="mt-6 text-sm text-muted">No notes yet for this season.</p>
-            )}
-
-            {season.topics.some((t) => !t.noteId) && (
-              <ul class="mt-4 grid gap-2">
-                {season.topics
-                  .filter((t) => !t.noteId)
-                  .map((topic) => (
-                    <li class="border border-dashed border-line px-4 py-3">
-                      <p class="font-medium">{topic.title}</p>
-                      <p class="mt-1 text-sm text-muted">{topic.summary}</p>
-                      <p class="mt-2 font-mono text-[11px] text-gold">Note in outline</p>
-                    </li>
-                  ))}
-              </ul>
-            )}
-          </section>
-        ))
-      }
-    </div>
+            </ul>
+          )}
+        </section>
+      ))
+    }
   </section>
 </PageLayout>

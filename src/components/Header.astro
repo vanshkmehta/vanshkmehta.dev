@@ -9,17 +9,17 @@ const path = Astro.url.pathname;
 
 <header class="sticky top-0 z-40 border-b border-line/80 bg-canvas/90 backdrop-blur-md">
   <div class="h-px w-full bg-accent" aria-hidden="true"></div>
-  <div class="wrap flex h-16 items-center gap-4">
-    <a href="/" class="group flex shrink-0 items-center gap-2.5 no-underline">
+  <div class="wrap flex h-14 min-w-0 items-center gap-3 md:h-16 md:gap-5">
+    <a href="/" class="flex min-w-0 shrink-0 items-center gap-2.5 no-underline">
       <span class="grid size-8 place-items-center border border-accent/50 bg-accent-soft font-mono text-[11px] font-semibold tracking-wider text-accent">
         VM
       </span>
-      <span class="font-mono text-[13px] tracking-tight text-accent">
+      <span class="hidden font-mono text-[13px] tracking-tight text-accent sm:inline">
         {SITE.shortName}<span class="text-muted">.dev</span>
       </span>
     </a>
 
-    <nav class="ml-4 hidden items-center gap-0.5 lg:flex" aria-label="Primary">
+    <nav class="ml-1 hidden min-w-0 items-center md:flex" aria-label="Primary">
       {
         NAV.map((item) => {
           const active = navIsActive(item.href, path);
@@ -27,7 +27,7 @@ const path = Astro.url.pathname;
             <a
               href={item.href}
               class:list={[
-                "rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors",
+                "shrink-0 px-2 py-1.5 text-[13px] font-medium transition-colors lg:px-2.5",
                 active ? "text-ink" : "text-muted hover:text-ink",
               ]}
               aria-current={active ? "page" : undefined}
@@ -39,12 +39,12 @@ const path = Astro.url.pathname;
       }
     </nav>
 
-    <div class="ml-auto flex items-center gap-1.5">
-      <SocialIcons compact class="hidden sm:flex" />
+    <div class="ml-auto flex shrink-0 items-center gap-1">
+      <SocialIcons compact class="hidden lg:flex" />
       <ThemeToggle />
       <button
         type="button"
-        class="inline-flex size-9 items-center justify-center rounded-md border border-line text-ink lg:hidden"
+        class="inline-flex size-9 items-center justify-center border border-line text-ink md:hidden"
         aria-expanded="false"
         aria-controls="mobile-nav"
         data-menu-toggle
@@ -62,11 +62,11 @@ const path = Astro.url.pathname;
 
   <nav
     id="mobile-nav"
-    class="wrap hidden border-t border-line py-3 lg:hidden"
+    class="wrap hidden border-t border-line py-3 md:hidden"
     aria-label="Mobile"
     hidden
   >
-    <ul class="flex flex-col gap-1 pb-2">
+    <ul class="flex flex-col gap-1 pb-3">
       {
         NAV.map((item) => {
           const active = navIsActive(item.href, path);
@@ -75,7 +75,7 @@ const path = Astro.url.pathname;
               <a
                 href={item.href}
                 class:list={[
-                  "block rounded-md px-2 py-2 text-sm font-medium",
+                  "block px-2 py-2 text-sm font-medium",
                   active ? "bg-accent-soft text-ink" : "text-muted hover:text-ink",
                 ]}
                 aria-current={active ? "page" : undefined}
