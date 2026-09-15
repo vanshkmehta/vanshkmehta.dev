@@ -82,4 +82,4 @@ If the domain's nameservers are not on Cloudflare, create a CNAME for `www` to `
 
 ## Theme
 
-Dark navy + cyan + white is the default. A toggle switches to a sparse light theme (off-white `#F1F3F5`, teal `#17A2B8`). Preference is stored in `localStorage`.
+Dark default is matte navy `#101B31` with cyan `#35C6D2` and warm off-white text. A toggle switches to light `#F6F3EA` with the same cyan accent and near-navy (`#101B31`) text. Whiteboard / Questions / Build chips use `#35C6D2` / `#E7B34E` / `#69D5AD` only. Preference is stored in `localStorage`.

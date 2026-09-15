@@ -3,7 +3,6 @@ import { SITE } from "../data/site";
 import SocialIcons from "./SocialIcons.astro";
 
 const host = SITE.url.replace("https://", "");
-const githubHost = SITE.github.replace("https://", "");
 ---
 
 <footer class="mt-24 border-t border-line">
@@ -32,8 +31,6 @@ const githubHost = SITE.github.replace("https://", "");
       <a class="text-accent hover:underline" href={SITE.url}>{host}</a>
       <span aria-hidden="true">·</span>
       <span>BY {SITE.markName}</span>
-      <span aria-hidden="true">·</span>
-      <a class="hover:text-accent" href={SITE.github}>{githubHost}</a>
     </p>
   </div>
 </footer>

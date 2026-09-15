@@ -24,42 +24,41 @@
   --color-mint-soft: var(--mint-soft);
 }
 
-/* Default: deep navy + bright sky-cyan + white */
+/* Vault: matte navy #101B31, cyan #35C6D2, warm off-white #F6F3EA */
 :root {
   color-scheme: dark;
-  --canvas: #070b14;
-  --canvas-elevated: #0c121e;
-  --ink: #ffffff;
-  --muted: #b8c2cc;
-  --faint: #7d8a97;
-  --line: #1a2436;
-  --accent: #5ce1f7;
-  --accent-fg: #041018;
-  --accent-soft: rgb(92 225 247 / 0.12);
-  --gold: #e2b15a;
-  --gold-soft: rgb(226 177 90 / 0.14);
-  --mint: #3ee8a0;
-  --mint-soft: rgb(62 232 160 / 0.14);
-  --grid-dot: rgb(92 225 247 / 0.11);
+  --canvas: #101b31;
+  --canvas-elevated: color-mix(in srgb, #101b31 86%, #f6f3ea 14%);
+  --ink: #f6f3ea;
+  --muted: color-mix(in srgb, #f6f3ea 62%, #101b31 38%);
+  --faint: color-mix(in srgb, #f6f3ea 38%, #101b31 62%);
+  --line: color-mix(in srgb, #35c6d2 16%, #101b31 84%);
+  --accent: #35c6d2;
+  --accent-fg: #101b31;
+  --accent-soft: color-mix(in srgb, #35c6d2 16%, transparent);
+  --gold: #e7b34e;
+  --gold-soft: color-mix(in srgb, #e7b34e 16%, transparent);
+  --mint: #69d5ad;
+  --mint-soft: color-mix(in srgb, #69d5ad 16%, transparent);
+  --grid-dot: color-mix(in srgb, #35c6d2 14%, transparent);
 }
 
-/* Sparse secondary: off-white + teal */
 html.light {
   color-scheme: light;
-  --canvas: #f1f3f5;
-  --canvas-elevated: #ffffff;
-  --ink: #0b1220;
-  --muted: #5c6b76;
-  --faint: #84919c;
-  --line: #d5dce3;
-  --accent: #17a2b8;
-  --accent-fg: #ffffff;
-  --accent-soft: rgb(23 162 184 / 0.12);
-  --gold: #c4922a;
-  --gold-soft: rgb(196 146 42 / 0.14);
-  --mint: #0f9f6e;
-  --mint-soft: rgb(15 159 110 / 0.12);
-  --grid-dot: rgb(23 162 184 / 0.16);
+  --canvas: #f6f3ea;
+  --canvas-elevated: color-mix(in srgb, #f6f3ea 72%, #ffffff 28%);
+  --ink: #101b31;
+  --muted: color-mix(in srgb, #101b31 58%, #f6f3ea 42%);
+  --faint: color-mix(in srgb, #101b31 38%, #f6f3ea 62%);
+  --line: color-mix(in srgb, #101b31 14%, #f6f3ea 86%);
+  --accent: #35c6d2;
+  --accent-fg: #101b31;
+  --accent-soft: color-mix(in srgb, #35c6d2 16%, transparent);
+  --gold: #e7b34e;
+  --gold-soft: color-mix(in srgb, #e7b34e 16%, transparent);
+  --mint: #69d5ad;
+  --mint-soft: color-mix(in srgb, #69d5ad 16%, transparent);
+  --grid-dot: color-mix(in srgb, #35c6d2 18%, transparent);
 }
 
 @layer base {
@@ -142,13 +141,13 @@ html.light {
   isolation: isolate;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 60% 50% at 100% 0%, rgb(92 225 247 / 0.08), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, color-mix(in srgb, #35c6d2 10%, transparent), transparent 55%),
     var(--canvas);
 }
 
 html.light .hero-atmosphere {
   background:
-    radial-gradient(ellipse 60% 50% at 100% 0%, rgb(23 162 184 / 0.1), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 100% 0%, color-mix(in srgb, #35c6d2 12%, transparent), transparent 55%),
     var(--canvas);
 }
 
