@@ -20,10 +20,10 @@ const projects = (await getCollection("projects")).sort((a, b) => {
     <p class="mt-6 max-w-[46rem] leading-relaxed text-muted">
       Curriculum builds are small and runnable. The permission engine and hex inspector have no UI — terminal only. The sales intelligence platform is a separate, in-development system.
     </p>
-    <div class="mt-12 grid gap-5 lg:grid-cols-2">
+    <div class="mt-12 grid gap-5 md:grid-cols-2">
       {
         projects.map((project) => (
-          <ProjectCard project={project} featured={project.data.featured} />
+          <ProjectCard project={project} />
         ))
       }
     </div>
