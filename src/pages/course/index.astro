@@ -1,0 +1,42 @@
+---
+import ModeChips from "../../components/ModeChips.astro";
+import SeasonCard from "../../components/SeasonCard.astro";
+import { seasons } from "../../data/seasons";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+const filming = seasons.find((s) => s.status === "filming");
+---
+
+<PageLayout
+  title="Course"
+  description="Sixteen seasons. Whiteboard, interview problems, then a build you can run. Currently filming Season 1: Memory & Low-Level."
+>
+  <section class="wrap py-16 sm:py-20">
+    <p class="section-kicker">Curriculum</p>
+    <h1 class="mt-5 max-w-2xl text-3xl font-medium tracking-tight sm:text-4xl">
+      A CS degree, sequenced the way I wish I got it.
+    </h1>
+    <div class="rule-cyan mt-5"></div>
+    <p class="mt-6 max-w-[46rem] text-muted leading-relaxed">
+      Sixteen seasons from bits to machine learning. Each topic is a trilogy: board, then questions, then a small production-shaped build. Notes live on this site; the class is on YouTube.
+    </p>
+    <ModeChips class="mt-6" />
+    {
+      filming && (
+        <p class="mt-6 font-mono text-xs text-accent">
+          Now filming {filming.code} — {filming.title}
+        </p>
+      )
+    }
+
+    <ol class="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {
+        seasons.map((season) => (
+          <li>
+            <SeasonCard season={season} />
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</PageLayout>

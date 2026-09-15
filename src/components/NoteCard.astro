@@ -1,0 +1,35 @@
+---
+import ModeChips from "./ModeChips.astro";
+
+interface Props {
+  href: string;
+  kicker: string;
+  title: string;
+  description: string;
+  meta?: string;
+  pending?: boolean;
+  showModes?: boolean;
+}
+
+const { href, kicker, title, description, meta, pending = false, showModes = false } = Astro.props;
+---
+
+{
+  pending ? (
+    <article class="flex h-full flex-col border border-dashed border-line bg-canvas-elevated/50 p-5">
+      <p class="font-mono text-[11px] tracking-widest text-faint uppercase">{kicker}</p>
+      <h3 class="mt-3 text-lg font-medium tracking-tight">{title}</h3>
+      <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{description}</p>
+      {showModes && <ModeChips class="mt-4" />}
+      {meta && <p class="mt-4 font-mono text-[11px] text-gold">{meta}</p>}
+    </article>
+  ) : (
+    <a href={href} class="card-hover flex h-full flex-col border border-line bg-canvas-elevated p-5 no-underline">
+      <p class="font-mono text-[11px] tracking-widest text-accent uppercase">{kicker}</p>
+      <h3 class="mt-3 text-lg font-medium tracking-tight text-ink">{title}</h3>
+      <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{description}</p>
+      {showModes && <ModeChips class="mt-4" />}
+      {meta && <p class="mt-4 font-mono text-[11px] text-faint">{meta}</p>}
+    </a>
+  )
+}

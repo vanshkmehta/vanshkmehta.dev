@@ -1,0 +1,23 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+
+const modes = [
+  { id: "whiteboard", label: "Whiteboard" },
+  { id: "questions", label: "Questions" },
+  { id: "build", label: "Build" },
+] as const;
+---
+
+<ul class:list={["flex flex-wrap gap-1.5", className]} aria-label="Lesson modes">
+  {
+    modes.map((mode) => (
+      <li>
+        <span class={`mode-chip mode-chip-${mode.id}`}>{mode.label}</span>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,39 @@
+---
+import { SITE } from "../data/site";
+import SocialIcons from "./SocialIcons.astro";
+
+const host = SITE.url.replace("https://", "");
+const githubHost = SITE.github.replace("https://", "");
+---
+
+<footer class="mt-24 border-t border-line">
+  <div class="wrap grid gap-10 py-12 sm:grid-cols-[1.4fr_1fr] lg:grid-cols-[1.6fr_1fr_1fr]">
+    <div>
+      <p class="font-mono text-xs tracking-widest text-accent uppercase">{host}</p>
+      <p class="mt-3 max-w-sm text-sm leading-relaxed text-muted">
+        Notes and builds for a public CS curriculum. The class is on YouTube; this is the desk.
+      </p>
+      <a class="mt-4 inline-block font-mono text-xs text-muted hover:text-accent" href={SITE.rss}>RSS</a>
+    </div>
+    <div>
+      <p class="font-mono text-xs tracking-widest text-faint uppercase">Elsewhere</p>
+      <div class="mt-3">
+        <SocialIcons />
+      </div>
+    </div>
+    <div>
+      <p class="font-mono text-xs tracking-widest text-faint uppercase">Contact</p>
+      <a class="mt-3 block text-sm text-ink hover:text-accent" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <p class="mt-2 text-sm text-muted">{SITE.location}</p>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <p class="wrap flex flex-wrap items-center gap-x-3 gap-y-1 py-5 font-mono text-[11px] tracking-wide text-faint">
+      <a class="text-accent hover:underline" href={SITE.url}>{host}</a>
+      <span aria-hidden="true">·</span>
+      <span>BY {SITE.markName}</span>
+      <span aria-hidden="true">·</span>
+      <a class="hover:text-accent" href={SITE.github}>{githubHost}</a>
+    </p>
+  </div>
+</footer>

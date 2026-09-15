@@ -1,0 +1,116 @@
+---
+title: "Bitwise Manipulation — Whiteboard, Interview Problems & Build"
+description: "Flags, masks, and compact state. The mental model, the interview checklist, and a bitmask permission engine you can hit with curl."
+pubDate: 2026-09-10
+season: 1
+seasonTitle: "Memory & Low-Level"
+topic: "Bitwise Manipulation"
+episodeIds:
+  - S1E1.1
+  - S1E1.2
+  - S1E1.3
+level: beginner systems
+nextTopic: "Integer Representation"
+nextHref: "/course/s1"
+---
+
+import BitGrid from "../../components/content/BitGrid.astro";
+
+**Season:** S1 — Memory & Low-Level
+**Episode IDs:** S1E1.1 · S1E1.2 · S1E1.3
+**Level:** beginner systems
+
+## What this topic covers
+
+A bit is a yes/no. A word is a row of them. Bitwise operators let you ask several yes/no questions in one instruction — permissions, flags, occupancy, parity — without a list, a map, or a branch per flag. If you cannot sketch the bits, you will fumble the interview problems and you will overbuild the production version.
+
+This note is the study sheet for the S1 trilogy: whiteboard first, interview problems next, then a permission engine you can run from a terminal.
+
+## Watch the trilogy
+
+1. **Whiteboard** — [Bitwise Manipulation](https://www.youtube.com/@vanshkmehta) — how AND/OR/XOR/shifts actually move bits, and why masks are the whole game.
+2. **Questions** — [Bitwise interview problems](https://www.youtube.com/@vanshkmehta) — single number, bit count, power of two, reverse bits, Hamming distance, subsets via masks.
+3. **Build** — [Bitmask permission engine](https://www.youtube.com/@vanshkmehta) — RBAC as integers, checked with `AND`, mutated with `OR` / `AND-NOT`.
+
+> **TODO:** Replace the three links above with the S1E1.1 / S1E1.2 / S1E1.3 episode URLs once they are public. Channel for now: [youtube.com/@vanshkmehta](https://www.youtube.com/@vanshkmehta).
+
+## Core ideas (notes)
+
+- **AND (`&`)** keeps bits that are 1 in *both* operands. It is the operator of tests: `flags & MASK` is either zero (no) or the mask (yes).
+- **OR (`|`)** turns bits on. Grant a permission: `flags = flags | WRITE`.
+- **XOR (`^`)** toggles. Same inputs cancel. It is also how you swap without a temp and how you find the bit that appears an odd number of times.
+- **NOT (`~`)** flips every bit in the width of the type. On a 32-bit signed int, `~0 == -1`. You almost never want raw NOT for a mask; you want `~MASK` *in the width you meant*.
+- **Shifts.** `<< n` multiplies by `2^n` for unsigned (and for non-overflowing signed). `>>` on signed values is usually arithmetic (sign-extending). Interview questions that need a logical right shift should say so; in Java that is `>>>`.
+- **A mask is a question.** `1 << k` is “the k-th bit.” `(1 << k) - 1` is “the low k bits.” `~( (1 << k) - 1 )` is “everything above k,” watch the width.
+- **Clearing is AND with the complement:** `flags &= ~MASK`. If you write `flags &= MASK` you kept the wrong set.
+- **Test without mutating:** `(flags & MASK) == MASK` means *all* bits in the mask are set. `(flags & MASK) != 0` means *any* bit is set. Those are different questions. Interviews punish mixing them.
+- **Signed width is part of the spec.** `1 << 31` on a 32-bit signed int is the sign bit. In Java, `1 << 31` is `Integer.MIN_VALUE`. Prefer `1L << k` when k can reach 31+.
+
+<BitGrid />
+
+The grid is the whole abstraction. Columns are bit positions. A permission set is which columns are lit. Checking a policy is AND. There is no user table join in this design — on purpose.
+
+## Problems checklist
+
+Work these on paper before you watch the Questions episode. One or two sentences of approach, not a dump of code.
+
+- [ ] **Single Number** — every value appears twice except one. XOR the array; pairs cancel.
+- [ ] **Number of 1 Bits** — Kernighan: `n &= n - 1` clears the lowest set bit. Loop until zero.
+- [ ] **Power of Two** — `n > 0 && (n & (n - 1)) == 0`. One bit set, and not zero.
+- [ ] **Reverse Bits** — 32-bit word. Either loop 32 times or swap-odd/even masks (`0x55555555`, `0x33333333`, …).
+- [ ] **Sum of Two Integers** without `+` — XOR is sum without carry; AND+shift is carry. Repeat until carry is 0.
+- [ ] **Hamming Distance** — XOR, then count bits.
+- [ ] **Subsets** — for `n` items, iterate `mask` in `[0, 1<<n)`. Bit `i` set means item `i` is in the subset. `n ≤ 20` is the usual bound; above that this is the wrong tool.
+- [ ] **Get / set / clear / toggle bit k** — you should be able to write these four in under a minute.
+
+Hint, not a solution: if a problem says “constant space” and the values are integers, ask whether the answer is hiding in the bits of the input itself.
+
+## Build walkthrough
+
+**Goal.** A permission engine that stores roles and resource actions as bitmasks. No UI. You exercise it with `curl` (or `httpie`) against a local process, or by piping JSON into a CLI. The point is the algebra, not a dashboard.
+
+**Constraints**
+
+- One integer (or a small array of integers if you outgrow 64 bits) per principal, per resource class.
+- Check is `O(1)`: `(principal & required) == required`.
+- Grant/revoke are pure bit updates; they must be idempotent.
+- Missing principal → deny. Unknown permission name → 400, not a silent no-op.
+- Tests are curl scripts in the repo. If it is not scriptable, it is not done.
+
+**Key design decisions**
+
+1. **Names are an API, bits are storage.** `READ`, `WRITE`, `ADMIN` are strings at the edge and bits inside. The mapping is explicit and versioned so you never “insert a flag in the middle” and shift meaning.
+2. **Deny by default.** A zero mask is not “admin forgot to configure”; it is empty authority.
+3. **ADMIN is not a magic string.** If admin implies everything, that is a policy expansion *before* the AND — still bits, still testable. Do not special-case it in the check path.
+4. **Width is declared.** Start with `long` (64). When a resource class needs more, use `long[]` and AND word-wise. Do not silently truncate.
+5. **No ORM for v1.** File or in-memory map keyed by principal id. Persistence is a later season (databases). This build should run in one process.
+
+Minimal check, Java-shaped:
+
+```java
+boolean allowed(long granted, long required) {
+    return (granted & required) == required;
+}
+
+long grant(long granted, long bits) {
+    return granted | bits;
+}
+
+long revoke(long granted, long bits) {
+    return granted & ~bits;
+}
+```
+
+Wire those three functions to HTTP if you want the “production-shaped” surface: `POST /check`, `POST /grant`, `POST /revoke`. Return JSON `{ "allow": true }` — nothing fancier.
+
+> **TODO:** GitHub folder for this build — `https://github.com/vanshkmehta/TODO-S1-E1` (replace with `…/S1/E1/` once the curriculum repo exists). The engine is also listed under [Projects](/projects/permission-engine).
+
+## Further reading
+
+- Henry S. Warren, *Hacker’s Delight* — chapters on counting bits and reversing bits. Primary source, not a blog.
+- Java Language Specification, [§15.19 Shift Operators](https://docs.oracle.com/javase/specs/jls/se17/html/jls-15.html#jls-15.19) — what `>>` vs `>>>` actually do.
+- Optional: the bit-twiddling collection in *The C Programming Language* (K&R) §2.9, if you want the same operators in a thinner language.
+
+## Next topic
+
+[Integer Representation](/course/s1) — two’s complement, endianness, and why the sign bit is not a bonus flag. Note not published yet; the season page tracks it.

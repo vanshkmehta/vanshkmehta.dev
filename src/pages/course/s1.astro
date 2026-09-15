@@ -1,0 +1,67 @@
+---
+import ModeChips from "../../components/ModeChips.astro";
+import { getSeason } from "../../data/seasons";
+import { SITE } from "../../data/site";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+const season = getSeason(1);
+if (!season) throw new Error("Season 1 missing");
+const published = season.topics.filter((t) => t.noteId).length;
+---
+
+<PageLayout
+  title={`${season.code} ${season.title}`}
+  description={season.pitch}
+>
+  <section class="wrap py-16 sm:py-20">
+    <p class="font-mono text-xs tracking-[0.18em] text-accent uppercase">
+      {season.code} · filming · {published}/{season.topics.length} notes
+    </p>
+    <h1 class="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">{season.title}</h1>
+    <div class="rule-cyan mt-5"></div>
+    <p class="mt-6 max-w-[46rem] leading-relaxed text-muted">{season.pitch}</p>
+    <ModeChips class="mt-6" />
+    <p class="mt-6 max-w-[46rem] text-sm leading-relaxed text-muted">
+      Thin index on purpose. Full write-ups ship as topic notes when the Build is out. Playlist:
+      <a class="text-accent hover:underline" href={SITE.youtube}>youtube.com/@vanshkmehta</a>
+      <span class="text-faint"> · TODO: season playlist URL</span>
+    </p>
+
+    <ol class="mt-12 grid gap-4">
+      {
+        season.topics.map((topic, i) => {
+          const href = topic.noteId ? `/notes/${topic.noteId}` : undefined;
+          return (
+            <li>
+              {href ? (
+                <a href={href} class="card-hover grid gap-3 border border-line bg-canvas-elevated p-5 no-underline sm:grid-cols-[4rem_1fr_auto] sm:items-center">
+                  <span class="font-mono text-sm text-accent">E{i + 1}</span>
+                  <div>
+                    <h2 class="text-lg font-medium tracking-tight text-ink">{topic.title}</h2>
+                    <p class="mt-1 text-sm text-muted">{topic.summary}</p>
+                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
+                  </div>
+                  <ModeChips class="sm:justify-end" />
+                </a>
+              ) : (
+                <article class="grid gap-3 border border-dashed border-line bg-canvas-elevated/40 p-5 sm:grid-cols-[4rem_1fr_auto] sm:items-center">
+                  <span class="font-mono text-sm text-faint">E{i + 1}</span>
+                  <div>
+                    <h2 class="text-lg font-medium tracking-tight">{topic.title}</h2>
+                    <p class="mt-1 text-sm text-muted">{topic.summary}</p>
+                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
+                  </div>
+                  <p class="font-mono text-[11px] tracking-wide text-gold uppercase">Coming after the Build</p>
+                </article>
+              )}
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    <p class="mt-10">
+      <a class="font-mono text-xs text-accent hover:underline" href="/course">← All seasons</a>
+    </p>
+  </section>
+</PageLayout>

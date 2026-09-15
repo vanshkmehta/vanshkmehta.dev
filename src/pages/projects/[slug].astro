@@ -1,0 +1,69 @@
+---
+import { getCollection, render } from "astro:content";
+import HexDiagram from "../../components/diagrams/HexDiagram.astro";
+import PermissionDiagram from "../../components/diagrams/PermissionDiagram.astro";
+import PipelineDiagram from "../../components/diagrams/PipelineDiagram.astro";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<PageLayout
+  title={project.data.title}
+  description={project.data.description}
+  ogType="article"
+  pubDate={project.data.pubDate}
+>
+  <article class="wrap py-16 sm:py-20">
+    <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+      <header>
+        <p class="font-mono text-xs tracking-[0.16em] text-accent uppercase">
+          {project.data.kind}
+          {project.data.status === "in-development" && " · in development"}
+        </p>
+        <h1 class="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">{project.data.title}</h1>
+        <div class="rule-cyan mt-5"></div>
+        <p class="mt-5 max-w-[46rem] text-muted leading-relaxed">{project.data.description}</p>
+        {
+          project.data.interfaceNote && (
+            <p class="mt-4 font-mono text-xs text-faint">{project.data.interfaceNote}</p>
+          )
+        }
+        <ul class="mt-6 flex flex-wrap gap-1.5">
+          {
+            project.data.stack.map((item) => (
+              <li class="border border-line px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted uppercase">
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-6 text-sm">
+          <a class="text-accent hover:underline" href={project.data.github}>
+            {project.data.githubLabel ?? "GitHub"}
+          </a>
+        </p>
+      </header>
+      <div class="border border-line bg-canvas-elevated p-4">
+        {project.data.kind === "engine" && <PermissionDiagram />}
+        {project.data.kind === "cli" && <HexDiagram />}
+        {project.data.kind === "saas" && <PipelineDiagram />}
+      </div>
+    </div>
+    <div class="prose-note mt-12 max-w-[72ch]">
+      <Content />
+    </div>
+    <p class="mt-12">
+      <a class="font-mono text-xs text-accent hover:underline" href="/projects">← All projects</a>
+    </p>
+  </article>
+</PageLayout>
