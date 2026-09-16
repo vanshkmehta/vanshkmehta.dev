@@ -1,6 +1,4 @@
 ---
-import ModeChips from "./ModeChips.astro";
-
 interface Props {
   href: string;
   kicker: string;
@@ -8,10 +6,9 @@ interface Props {
   description: string;
   meta?: string;
   pending?: boolean;
-  showModes?: boolean;
 }
 
-const { href, kicker, title, description, meta, pending = false, showModes = false } = Astro.props;
+const { href, kicker, title, description, meta, pending = false } = Astro.props;
 ---
 
 {
@@ -20,7 +17,6 @@ const { href, kicker, title, description, meta, pending = false, showModes = fal
       <p class="caption truncate text-faint">{kicker}</p>
       <h3 class="title mt-3 line-clamp-2">{title}</h3>
       <p class="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{description}</p>
-      {showModes && <ModeChips class="mt-5" />}
       {meta && <p class="mt-4 font-mono text-[11px] text-gold">{meta}</p>}
     </article>
   ) : (
@@ -28,7 +24,6 @@ const { href, kicker, title, description, meta, pending = false, showModes = fal
       <p class="caption truncate text-accent">{kicker}</p>
       <h3 class="title mt-3 line-clamp-2 text-ink">{title}</h3>
       <p class="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{description}</p>
-      {showModes && <ModeChips class="mt-5" />}
       {meta && <p class="mt-4 font-mono text-[11px] text-faint">{meta}</p>}
     </a>
   )

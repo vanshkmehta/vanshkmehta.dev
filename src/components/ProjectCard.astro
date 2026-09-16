@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import PermissionDiagram from "./diagrams/PermissionDiagram.astro";
+import { PATHS } from "../data/site";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const { project, featured = false } = Astro.props;
-const href = `/projects/${project.id}`;
+const href = `${PATHS.build}/${project.id}`;
 
 const kindLabel =
   project.data.kind === "engine" ? "Engine" : project.data.kind === "cli" ? "CLI" : "SaaS";
@@ -34,7 +35,7 @@ const kindLabel =
       <p class="caption text-accent">{kindLabel}</p>
       {
         project.data.status === "in-development" && (
-          <span class="mode-chip mode-chip-questions">In development</span>
+          <span class="caption text-faint">In development</span>
         )
       }
     </div>

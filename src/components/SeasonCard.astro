@@ -1,6 +1,5 @@
 ---
 import type { Season } from "../data/seasons";
-import ModeChips from "./ModeChips.astro";
 
 interface Props {
   season: Season;
@@ -16,12 +15,11 @@ const topicCount = season.topics.length;
     <a href={href} class="card card-hover flex h-full flex-col p-6 no-underline">
       <div class="flex items-center justify-between gap-3">
         <p class="font-mono text-xs text-accent">{season.code}</p>
-        <span class="mode-chip mode-chip-whiteboard">Filming</span>
+        <span class="caption text-accent">Filming</span>
       </div>
       <h3 class="title mt-4 line-clamp-2 text-ink">{season.title}</h3>
       <p class="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{season.pitch}</p>
-      <ModeChips class="mt-5" />
-      <p class="mt-3 font-mono text-[11px] text-faint">
+      <p class="mt-5 font-mono text-[11px] text-faint">
         {topicCount} topics · season page
       </p>
     </a>

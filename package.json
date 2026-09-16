@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "Personal site for Vanshit Mehta: course notes, projects, and a public CS curriculum.",
+  "description": "Personal site for Vansh Mehta: a fundamentals-first Computer Science course, notes, and builds.",
   "engines": {
     "node": ">=22"
   },

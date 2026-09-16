@@ -77,7 +77,7 @@ export const seasons: Season[] = [
     title: "Data Structures I: Linear",
     status: "queued",
     pitch:
-      "Arrays, strings, stacks, queues, and linked lists. The structures you will actually be asked to mutate on a whiteboard.",
+      "Arrays, strings, stacks, queues, and linked lists. The structures you will actually be asked to mutate in an interview.",
     topics: [],
   },
   {

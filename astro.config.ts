@@ -9,6 +9,10 @@ export default defineConfig({
   // Static HTML. wrangler.jsonc uploads ./dist as Workers assets (no Worker
   // main). Do not add @astrojs/cloudflare — that adapter emits a Worker script.
   output: "static",
+  redirects: {
+    "/projects": "/build",
+    "/projects/[slug]": "/build/[slug]",
+  },
   integrations: [
     mdx(),
     sitemap({

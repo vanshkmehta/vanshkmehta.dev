@@ -1,18 +1,19 @@
 ---
 import { getCollection } from "astro:content";
 import NoteCard from "../components/NoteCard.astro";
-import ProjectCard from "../components/ProjectCard.astro";
+import PermissionDiagram from "../components/diagrams/PermissionDiagram.astro";
 import SeasonTerminal from "../components/SeasonTerminal.astro";
-import { SITE } from "../data/site";
+import { PATHS, SITE } from "../data/site";
 import { formatDate } from "../lib/utils";
 import PageLayout from "../layouts/PageLayout.astro";
 
 const notes = (await getCollection("notes")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const projects = await getCollection("projects");
-const featured = projects.find((p) => p.data.featured) ?? projects[0];
+const builds = await getCollection("projects");
+const featured = builds.find((p) => p.data.featured) ?? builds[0];
 const latestNotes = notes.slice(0, 3);
+const featuredHref = featured ? `${PATHS.build}/${featured.id}` : PATHS.build;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -33,21 +34,28 @@ const jsonLd = {
   <section class="hero-atmosphere">
     <div class="wrap grid min-w-0 items-center gap-10 py-16 md:py-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16 lg:py-24">
       <div class="min-w-0">
-        <p class="caption text-accent">
-          {SITE.role} · {SITE.employer} · Mumbai
-        </p>
-        <p class="mt-4 text-sm tracking-wide text-muted">{SITE.tagline}</p>
+        <p class="caption text-accent">{SITE.tagline}</p>
         <div class="rule-cyan mt-5"></div>
-        <h1 class="display mt-6 max-w-xl">
-          I teach CS the way I wish I had learned it. Board first, then interview problems, then a small project you can run.
-        </h1>
+        <h1 class="display mt-6 max-w-xl">What really happens when you run a line of code?</h1>
         <p class="lede mt-6">
-          YouTube is the class. Builds live here. Notes will too, once they are ready. Season 1 (Memory &amp; Low-Level) is filming now.
+          That question sits at the heart of everything I build and teach.
         </p>
+        <p class="mt-5 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+          I’m {SITE.name}, a {SITE.role} at {SITE.employer}, Mumbai, and I’m teaching Computer Science in public, from the fundamentals beneath the code to the systems built on top of them.
+        </p>
+        <ul class="mt-6 space-y-1 text-[1.02rem] leading-relaxed text-muted">
+          <li>No memorising definitions.</li>
+          <li>No blindly solving hundreds of interview questions.</li>
+          <li>No treating Computer Science as disconnected topics.</li>
+        </ul>
+        <p class="mt-6 max-w-[40rem] text-[1.02rem] leading-relaxed text-ink">
+          Understand the concept. Solve the problem. Build the system.
+        </p>
+        <p class="mt-3 text-[1.02rem] leading-relaxed text-muted">That’s what this space is about.</p>
         <div class="mt-8 flex flex-wrap gap-2">
-          <a class="btn-primary" href="/course">Watch the course</a>
-          <a class="btn-ghost" href="/notes">Notes</a>
-          <a class="btn-ghost" href="/projects">Projects</a>
+          <a class="btn-primary" href={PATHS.course}>Start with class</a>
+          <a class="btn-ghost" href={PATHS.notes}>Notes</a>
+          <a class="btn-ghost" href={PATHS.build}>Build</a>
         </div>
       </div>
       <div class="min-w-0 lg:justify-self-stretch">
@@ -58,11 +66,60 @@ const jsonLd = {
 
   <div class="wrap flex flex-col gap-16 py-16 md:gap-20 md:py-20">
     <section class="min-w-0">
-      <p class="section-kicker">01 / Notes</p>
+      <p class="section-kicker">01 / Class</p>
+      <h2 class="title mt-4">Start Here. Go Deeper.</h2>
+      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+        Every lesson begins with a question: what is actually happening underneath the code?
+      </p>
+      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+        We start with the fundamentals, break down the problem, and connect the idea to how software is really built.
+      </p>
+      <a
+        href={SITE.youtube}
+        class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="flex min-h-40 min-w-0 items-center justify-center border-b border-line bg-[var(--canvas)] px-6 py-10 lg:border-r lg:border-b-0">
+          <div class="min-w-0 text-center">
+            <p class="caption text-accent">Currently exploring</p>
+            <p class="mt-3 font-mono text-sm text-ink">S01 · Memory &amp; Low-Level</p>
+            <p class="mt-2 truncate font-mono text-xs text-muted">▶ youtube.com/@vanshkmehta</p>
+          </div>
+        </div>
+        <div class="min-w-0 p-6 sm:p-8">
+          <h3 class="title text-ink">Memory &amp; Low-Level</h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            Starting with bits, memory, pointers, and the foundations closest to the machine.
+          </p>
+          <p class="mt-4 text-sm leading-relaxed text-ink">
+            Less memorisation.
+            <br />
+            More “oh, now I get it.”
+          </p>
+          <p class="mt-6 font-mono text-xs text-accent">Watch the latest class →</p>
+        </div>
+      </a>
+      <p class="mt-4">
+        <a class="caption text-accent hover:underline" href={PATHS.course}>See the roadmap →</a>
+      </p>
+    </section>
+
+    <section class="min-w-0">
+      <p class="section-kicker">02 / Notes</p>
       <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
-        <h2 class="title">Latest notes</h2>
-        <a class="caption text-accent hover:underline" href="/notes">All notes</a>
+        <h2 class="title">Concepts, Explained and Connected.</h2>
+        <a class="caption text-accent hover:underline" href={PATHS.notes}>Open the notes →</a>
       </div>
+      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+        Videos explain. Notes help you remember.
+      </p>
+      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+        Each lesson comes with concepts, diagrams, examples, interview questions, and key takeaways, all in one place.
+      </p>
+      <p class="mt-4 max-w-[40rem] text-sm leading-relaxed text-muted">
+        Read before the lesson. Use while learning. Revisit before the interview.
+      </p>
       {
         latestNotes.length > 0 ? (
           <div class="mt-8 grid min-w-0 gap-4 md:grid-cols-3">
@@ -73,7 +130,6 @@ const jsonLd = {
                 title={note.data.topic}
                 description={note.data.description}
                 meta={formatDate(note.data.pubDate)}
-                showModes
               />
             ))}
           </div>
@@ -91,44 +147,86 @@ const jsonLd = {
     {
       featured && (
         <section class="min-w-0">
-          <p class="section-kicker">02 / Build</p>
-          <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
-            <h2 class="title">Featured project</h2>
-            <a class="caption text-accent hover:underline" href="/projects">All projects</a>
-          </div>
-          <div class="mt-8 min-w-0">
-            <ProjectCard project={featured} featured />
-          </div>
+          <p class="section-kicker">03 / Build</p>
+          <h2 class="title mt-4">Turn the Idea Into Code.</h2>
+          <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+            This is where theory gets tested.
+          </p>
+          <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+            Take a concept. Write the code. Run it. Break it. Understand why it broke.
+          </p>
+          <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+            The builds are small enough to understand and practical enough to run.
+          </p>
+          <a href={featuredHref} class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+            <div class="diagram-frame border-b border-line bg-[var(--canvas)] p-4 sm:p-5 lg:border-r lg:border-b-0">
+              <PermissionDiagram />
+            </div>
+            <div class="min-w-0 p-6 sm:p-8">
+              <p class="caption text-accent">Featured Build</p>
+              <h3 class="title mt-3 text-ink">Engine · Permission Engine</h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted">
+                A Java 17 Role-Based Access Control (RBAC) engine built around bitmasks.
+              </p>
+              <p class="mt-3 text-sm leading-relaxed text-muted">Permissions become bits.</p>
+              <p class="mt-4 font-mono text-xs leading-6 text-ink">
+                Check → AND
+                <br />
+                Grant → OR
+                <br />
+                Revoke → AND-NOT
+              </p>
+              <p class="mt-4 text-sm leading-relaxed text-muted">
+                A small build.
+                <br />
+                A fundamental idea.
+                <br />
+                One more concept that makes sense.
+              </p>
+              <p class="mt-6 font-mono text-xs text-accent">Explore the build →</p>
+            </div>
+          </a>
         </section>
       )
     }
 
     <section class="min-w-0">
-      <p class="section-kicker">03 / Class</p>
-      <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
-        <h2 class="title">Latest video</h2>
-        <a class="caption text-accent hover:underline" href={SITE.youtube}>YouTube</a>
+      <p class="section-kicker">Why I’m Building This</p>
+      <h2 class="title mt-4">Computer Science content is everywhere.</h2>
+      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+        Courses. Cheat sheets. Interview playlists. Tutorials.
+      </p>
+      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+        But learning the pieces doesn’t always mean understanding how they connect.
+      </p>
+      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-ink">That’s what I’m building here.</p>
+      <p class="mt-6 font-mono text-sm leading-7 text-muted">
+        Learn the concept.
+        <br />
+        Understand the why.
+        <br />
+        Solve the problem.
+        <br />
+        Build.
+        <br />
+        Repeat.
+      </p>
+    </section>
+
+    <section class="card min-w-0 px-6 py-10 sm:px-8 sm:py-12">
+      <p class="section-kicker">Your path</p>
+      <h2 class="display mt-5 max-w-2xl">Your CS Learning Path Starts Here.</h2>
+      <p class="lede mt-5">
+        Built for Computer Science students, software engineers, backend developers, and interview candidates who want stronger fundamentals and a deeper understanding of how software and systems work.
+      </p>
+      <p class="mt-6 text-[1.02rem] leading-relaxed text-muted">
+        Learn the class. Explore the notes. Build the concepts.
+      </p>
+      <p class="mt-3 text-[1.02rem] leading-relaxed text-ink">Welcome to the course.</p>
+      <div class="mt-8 flex flex-wrap gap-2">
+        <a class="btn-primary" href={PATHS.course}>The roadmap</a>
+        <a class="btn-ghost" href={SITE.youtube} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
       </div>
-      <a
-        href={SITE.youtube}
-        class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <div class="flex min-h-40 min-w-0 items-center justify-center border-b border-line bg-[var(--canvas)] px-6 py-10 lg:border-r lg:border-b-0">
-          <div class="min-w-0 text-center">
-            <p class="caption text-accent">S1E1.1 · Whiteboard</p>
-            <p class="mt-3 truncate font-mono text-sm text-muted">▶ youtube.com/@vanshkmehta</p>
-          </div>
-        </div>
-        <div class="min-w-0 p-6 sm:p-8">
-          <h3 class="title text-ink">Bitwise Manipulation (whiteboard)</h3>
-          <p class="mt-3 text-sm leading-relaxed text-muted">
-            Season 1 is being filmed. This card goes to the channel. Board first; the note and the build follow.
-          </p>
-          <p class="mt-6 font-mono text-xs text-accent">Watch on YouTube →</p>
-        </div>
-      </a>
     </section>
   </div>
 </PageLayout>

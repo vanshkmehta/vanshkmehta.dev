@@ -1,7 +1,6 @@
 ---
-import ModeChips from "../../components/ModeChips.astro";
 import { getSeason } from "../../data/seasons";
-import { SITE } from "../../data/site";
+import { PATHS, SITE } from "../../data/site";
 import PageLayout from "../../layouts/PageLayout.astro";
 
 const season = getSeason(1);
@@ -19,9 +18,8 @@ if (!season) throw new Error("Season 1 missing");
     <h1 class="display mt-4">{season.title}</h1>
     <div class="rule-cyan mt-5"></div>
     <p class="lede mt-6">{season.pitch}</p>
-    <ModeChips class="mt-6" />
     <p class="mt-6 max-w-[40rem] text-sm leading-relaxed text-muted">
-      Topic list for the season. Full write-ups will show up as notes when each build is out. Playlist:
+      Topic list for the season. Notes will show up here as each lesson ships. Class:
       <a class="text-accent hover:underline break-all" href={SITE.youtube}>youtube.com/@vanshkmehta</a>
     </p>
   </section>
@@ -41,7 +39,6 @@ if (!season) throw new Error("Season 1 missing");
                     <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
                     <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
                   </div>
-                  <ModeChips />
                 </a>
               ) : (
                 <article class="card flex min-w-0 flex-col gap-4 border-dashed p-6 md:flex-row md:items-start">
@@ -51,7 +48,7 @@ if (!season) throw new Error("Season 1 missing");
                     <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
                     <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
                   </div>
-                  <p class="caption shrink-0 text-gold">Queued</p>
+                  <p class="caption shrink-0 text-faint">Queued</p>
                 </article>
               )}
             </li>
@@ -60,7 +57,7 @@ if (!season) throw new Error("Season 1 missing");
       }
     </ol>
     <p class="mt-10">
-      <a class="caption text-accent hover:underline" href="/course">← All seasons</a>
+      <a class="caption text-accent hover:underline" href={PATHS.course}>← The roadmap</a>
     </p>
   </section>
 </PageLayout>

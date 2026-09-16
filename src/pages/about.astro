@@ -1,6 +1,5 @@
 ---
-import SocialIcons from "../components/SocialIcons.astro";
-import { SITE } from "../data/site";
+import { PATHS, SITE } from "../data/site";
 import PageLayout from "../layouts/PageLayout.astro";
 
 const jsonLd = {
@@ -13,93 +12,134 @@ const jsonLd = {
   worksFor: { "@type": "Organization", name: SITE.employer },
   sameAs: [SITE.youtube, SITE.github, SITE.linkedin],
 };
+
+const stack = [
+  { label: "Languages", value: "Java" },
+  { label: "Backend", value: "Spring Boot · Spring MVC · Spring Data JPA · Hibernate" },
+  { label: "Data", value: "PostgreSQL · Oracle · Redis" },
+  { label: "Messaging & Systems", value: "RabbitMQ · REST · Event-driven architecture · Distributed systems" },
+  { label: "Infrastructure", value: "Docker · Kubernetes · Linux · Maven · Git" },
+] as const;
 ---
 
 <PageLayout
   title="About"
-  description="Backend engineer at Jio Platforms. Public CS course on YouTube. Mumbai."
+  description="Backend Engineer at Jio Platforms in Mumbai. Teaching Computer Science in public, from fundamentals to the systems built on top of them."
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <section class="wrap page-head">
     <p class="section-kicker">About</p>
-    <h1 class="display mt-5">{SITE.name}</h1>
-    <p class="mt-3 font-mono text-sm text-accent">{SITE.tagline}</p>
+    <h1 class="display mt-5 max-w-2xl">Building systems. Understanding how they work. Teaching what I learn.</h1>
     <div class="rule-cyan mt-5"></div>
   </section>
 
-  <section class="wrap grid min-w-0 gap-10 pb-16 md:pb-20 lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:gap-14">
-    <div class="max-w-[42rem] min-w-0 space-y-6 text-[1.02rem] leading-relaxed text-muted">
-      <p class="text-ink">
-        Backend engineer at Jio Platforms (Jio Cloud / India AI), Mumbai. Java, Spring Boot, distributed systems. A bit over two and a half years in.
-      </p>
-      <p>
-        Day job is infrastructure that has to fail in the right place: quota checks before provision, queues that do not block the caller, replication with a recovery path you can name.
-      </p>
-      <p>
-        On the side I am filming a public CS course. Whiteboard, then interview problems, then a small project you can run. YouTube is the class. Notes will live here when they are ready.
-      </p>
+  <section class="wrap max-w-[46rem] min-w-0 space-y-6 pb-16 text-[1.02rem] leading-relaxed text-muted md:pb-20">
+    <p class="text-ink">
+      I’m {SITE.name}, a {SITE.role} at {SITE.employer} in Mumbai, working across Java, Spring Boot, distributed systems, cloud infrastructure, and event-driven architecture.
+    </p>
+    <p>
+      I spend my working days building backend systems that have to work under real constraints: quotas, queues, failures, replication, provisioning, and recovery.
+    </p>
+    <p>
+      And outside work, I’m doing something slightly different: I’m teaching Computer Science in public.
+    </p>
 
-      <h2 class="title pt-4 text-ink">Jio Platforms</h2>
-      <p class="font-mono text-xs text-faint">Software Development Engineer I · Dec 2023 to present</p>
-      <ul class="list-disc space-y-2 pl-5 marker:text-accent">
-        <li>
-          Quota validation framework for Jio Cloud across ROS, HCI, GCP, and internal IaaS. Logical and physical checks before provision, so over-commit fails at the source instead of after.
-        </li>
-        <li>
-          Central engine for order types (VMs, block storage, security groups, HSM). That cut post-provisioning failure orders by about 40% in the numbers we tracked.
-        </li>
-        <li>
-          Async order-processing pipeline on RabbitMQ for compute, storage, and networking across hybrid cloud.
-        </li>
-        <li>
-          OPS logging with end-to-end traces on provisioning failures. Incident close time dropped about 60% on the paths we instrumented.
-        </li>
-        <li>
-          Disaster recovery: REST API work and asynchronous replication workflows with infrastructure teams. Not a one-person feature; I was a core contributor.
-        </li>
-        <li>
-          Scheduled PostgreSQL to Oracle sync so order state (Postgres) and provisioning state (Oracle) do not drift.
-        </li>
-      </ul>
-      <p class="font-mono text-xs leading-relaxed text-faint">
-        Java 17 · Spring Boot · Spring MVC · PostgreSQL · Oracle · RabbitMQ · Redis · Hibernate/JPA · REST · Maven · Linux
-      </p>
+    <h2 class="title pt-6 text-ink">What I Do</h2>
+    <p>
+      As a Backend Engineer, I work on infrastructure and services that power cloud and AI workloads at {SITE.employer}.
+    </p>
+    <p>
+      My work spans Java 17, Spring Boot, PostgreSQL, Oracle, Redis, RabbitMQ, REST APIs, Docker, Kubernetes, and asynchronous processing.
+    </p>
+    <p>I’ve worked on systems for:</p>
+    <p class="font-mono text-sm leading-7 text-ink">
+      Quota validation → Order processing → Async workflows → Observability → Disaster recovery → Data synchronization
+    </p>
+    <p>The interesting part isn’t just writing the code.</p>
+    <p>
+      It’s understanding what happens when the system meets scale, concurrency, failure, and real-world constraints.
+    </p>
 
-      <h2 class="title pt-4 text-ink">Stack</h2>
-      <p>
-        Java is the main language. Spring Boot, Spring MVC, Spring Data JPA, Hibernate. PostgreSQL, Oracle, Redis, RabbitMQ. Docker, Kubernetes, Maven, Git. A lot of async processing and event-driven work.
-      </p>
+    <h2 class="title pt-6 text-ink">Why Computer Science?</h2>
+    <p>Because frameworks change.</p>
+    <p>Languages evolve.</p>
+    <p>Tools come and go.</p>
+    <p class="text-ink">But the fundamentals stay.</p>
+    <p>
+      Understanding memory, data structures, operating systems, networks, databases, concurrency, and distributed systems gives you a mental model that lasts far beyond a specific technology stack.
+    </p>
+    <p>That’s what I’m interested in.</p>
+    <p>Not just how to use a tool. How the system behind it actually works.</p>
 
-      <h2 class="title pt-4 text-ink">In public</h2>
-      <p>
-        Season 1 of the course, plus a bitmask permission engine you can hit with curl. That is the list for now.
-      </p>
+    <h2 class="title pt-6 text-ink">Teaching Computer Science in Public</h2>
+    <p>I’m currently building a fundamentals-first Computer Science course in public.</p>
+    <p>The approach is simple:</p>
+    <p class="font-mono text-sm leading-7 text-ink">
+      Start with the concept.
+      <br />
+      Understand it from first principles.
+      <br />
+      Solve problems that test the mental model.
+      <br />
+      Then build a system that puts the idea into code.
+    </p>
+    <p>
+      The course starts with Memory &amp; Low-Level Concepts and will move through the foundations of modern software engineering, including data structures, algorithms, operating systems, computer networks, databases, distributed systems, backend engineering, security, cloud, and machine learning.
+    </p>
+    <p>The goal isn’t to cover more topics. It’s to understand the connections between them.</p>
+    <p>
+      <a class="text-accent hover:underline" href={PATHS.course}>Explore the course →</a>
+    </p>
 
-      <h2 class="title pt-4 text-ink">Elsewhere</h2>
-      <p>
-        Earlier: Kavach, an Android SOS app (Java, XML, Firebase). Gold medal at Anveshana 2023; shortlisted for the Government of India Tech Innovation Awards. It is not a curriculum build and it is not listed under Projects.
-      </p>
-      <p>
-        <a class="text-accent hover:underline" href="/resume.pdf">Resume (PDF)</a>
-        {" · "}
-        <a class="text-accent hover:underline" href={SITE.github}>GitHub</a>
-        {" · "}
-        <a class="text-accent hover:underline" href={SITE.linkedin}>LinkedIn</a>
-        {" · "}
-        <a class="text-accent hover:underline" href={SITE.youtube}>YouTube</a>
-      </p>
-    </div>
+    <h2 class="title pt-6 text-ink">A Little Beyond the Backend</h2>
+    <p>
+      Before backend engineering became my focus, I built Kavach, an Android SOS application using Java, XML, and Firebase.
+    </p>
+    <p>
+      It went on to win a Gold Medal at Anveshana 2023 and was shortlisted for the Government of India Tech Innovation Awards.
+    </p>
+    <p>It was an early lesson in what I still enjoy today:</p>
+    <p class="text-ink">Take an idea. Build it. Test it in the real world. Learn from what breaks.</p>
 
-    <aside class="card h-fit min-w-0 p-6">
-      <p class="caption text-faint">Now</p>
-      <p class="mt-3 text-sm leading-relaxed">Filming Season 1 · Memory &amp; Low-Level</p>
-      <p class="caption mt-6 text-faint">Mail</p>
-      <a class="mt-2 block text-sm text-accent hover:underline break-all" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-      <p class="caption mt-6 text-faint">Socials</p>
-      <div class="mt-3 min-w-0">
-        <SocialIcons />
-      </div>
-    </aside>
+    <h2 class="title pt-6 text-ink">The Stack</h2>
+    <dl class="grid gap-3 sm:grid-cols-[11rem_minmax(0,1fr)]">
+      {
+        stack.map((row) => (
+          <>
+            <dt class="caption text-faint">{row.label}</dt>
+            <dd class="text-ink">{row.value}</dd>
+          </>
+        ))
+      }
+    </dl>
+
+    <h2 class="title pt-6 text-ink">What I’m Curious About</h2>
+    <p class="text-ink">How does it work underneath?</p>
+    <p>
+      That question has taken me from writing code to understanding systems, and from learning Computer Science to teaching it.
+    </p>
+    <p>There’s always another abstraction to peel back.</p>
+    <p>So I keep going one layer deeper.</p>
+
+    <h2 class="title pt-6 text-ink">Currently</h2>
+    <p class="text-ink">Filming Season 1: Memory &amp; Low-Level</p>
+    <p>Learning. Building. Teaching in public.</p>
+    <p class="font-mono text-sm">
+      <a class="text-accent hover:underline" href={SITE.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
+      {" · "}
+      <a class="text-accent hover:underline" href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      {" · "}
+      <a class="text-accent hover:underline" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </p>
+    <p class="pt-4 text-ink">{SITE.name}</p>
+    <p>
+      {SITE.role} · {SITE.educatorRole}
+      <br />
+      {SITE.location}
+    </p>
+    <p>
+      <a class="text-accent hover:underline break-all" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </p>
   </section>
 </PageLayout>
