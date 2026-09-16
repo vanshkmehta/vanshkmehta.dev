@@ -2,10 +2,10 @@ export const SITE = {
   name: "Vanshit Mehta",
   shortName: "vanshkmehta",
   markName: "VANSH MEHTA",
-  title: "Vanshit Mehta — backend systems, built from scratch",
-  tagline: "Backend systems, built from scratch",
+  title: "Vanshit Mehta, backend engineer",
+  tagline: "Backend engineer. Teaching CS in public.",
   description:
-    "Backend systems, built from scratch. I teach the CS degree the way I wish I got it — board first, interview problems next, then a small real project you can run.",
+    "Backend engineer at Jio Platforms in Mumbai. I teach CS the way I wish I had learned it: whiteboard first, then interview problems, then a small project you can run.",
   url: "https://vanshkmehta.dev",
   locale: "en_IN",
   email: "vanshitkalpeshmehta4@gmail.com",

@@ -1,8 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import PermissionDiagram from "./diagrams/PermissionDiagram.astro";
-import HexDiagram from "./diagrams/HexDiagram.astro";
-import PipelineDiagram from "./diagrams/PipelineDiagram.astro";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -11,6 +9,9 @@ interface Props {
 
 const { project, featured = false } = Astro.props;
 const href = `/projects/${project.id}`;
+
+const kindLabel =
+  project.data.kind === "engine" ? "Engine" : project.data.kind === "cli" ? "CLI" : "SaaS";
 ---
 
 <a
@@ -26,15 +27,11 @@ const href = `/projects/${project.id}`;
       featured && "lg:border-r lg:border-b-0",
     ]}
   >
-    {project.data.kind === "engine" && <PermissionDiagram />}
-    {project.data.kind === "cli" && <HexDiagram />}
-    {project.data.kind === "saas" && <PipelineDiagram />}
+    <PermissionDiagram />
   </div>
   <div class="flex min-w-0 flex-col p-6">
     <div class="flex flex-wrap items-center gap-2">
-      <p class="caption text-accent">
-        {project.data.kind === "engine" ? "Engine" : project.data.kind === "cli" ? "CLI" : "SaaS"}
-      </p>
+      <p class="caption text-accent">{kindLabel}</p>
       {
         project.data.status === "in-development" && (
           <span class="mode-chip mode-chip-questions">In development</span>

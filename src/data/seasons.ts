@@ -32,9 +32,9 @@ export const seasons: Season[] = [
         slug: "bitwise",
         title: "Bitwise Manipulation",
         episodeIds: ["S1E1.1", "S1E1.2", "S1E1.3"],
-        noteId: "s1-bitwise",
+        noteId: null,
         summary:
-          "AND, OR, XOR, shifts, and masks — the algebra of flags, permissions, and compact state.",
+          "AND, OR, XOR, shifts, and masks. The algebra of flags, permissions, and compact state.",
       },
       {
         slug: "integers",
@@ -74,17 +74,17 @@ export const seasons: Season[] = [
     id: 2,
     code: "S2",
     slug: "s2",
-    title: "Data Structures I — Linear",
+    title: "Data Structures I: Linear",
     status: "queued",
     pitch:
-      "Arrays, strings, stacks, queues, and linked lists — the structures you will actually be asked to mutate on a whiteboard.",
+      "Arrays, strings, stacks, queues, and linked lists. The structures you will actually be asked to mutate on a whiteboard.",
     topics: [],
   },
   {
     id: 3,
     code: "S3",
     slug: "s3",
-    title: "Data Structures II — Trees & Graphs",
+    title: "Data Structures II: Trees & Graphs",
     status: "queued",
     pitch:
       "BSTs, heaps, tries, union-find, and graph representations. Shape first, then the operations that preserve it.",
@@ -94,7 +94,7 @@ export const seasons: Season[] = [
     id: 4,
     code: "S4",
     slug: "s4",
-    title: "Algorithms I — Search, Sort, Greedy",
+    title: "Algorithms I: Search, Sort, Greedy",
     status: "queued",
     pitch:
       "Binary search as a loop invariant, sorting as a contract, greedy as a proof that a local choice is safe.",
@@ -104,7 +104,7 @@ export const seasons: Season[] = [
     id: 5,
     code: "S5",
     slug: "s5",
-    title: "Algorithms II — DP & Graphs",
+    title: "Algorithms II: DP & Graphs",
     status: "queued",
     pitch:
       "States, transitions, shortest paths, and the difference between memoization and a table you can explain.",
@@ -217,7 +217,7 @@ export const seasons: Season[] = [
     title: "Machine Learning",
     status: "queued",
     pitch:
-      "From linear models to training loops — enough to read a paper and ship a small system, not a hype reel.",
+      "Linear models to training loops. Enough to read a paper and ship a small system. Not a hype reel.",
     topics: [],
   },
 ];

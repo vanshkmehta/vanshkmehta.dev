@@ -28,11 +28,11 @@
 :root {
   color-scheme: dark;
   --canvas: #101b31;
-  --canvas-elevated: color-mix(in srgb, #101b31 86%, #f6f3ea 14%);
+  --canvas-elevated: color-mix(in srgb, #101b31 80%, #f6f3ea 20%);
   --ink: #f6f3ea;
-  --muted: color-mix(in srgb, #f6f3ea 62%, #101b31 38%);
-  --faint: color-mix(in srgb, #f6f3ea 38%, #101b31 62%);
-  --line: color-mix(in srgb, #35c6d2 16%, #101b31 84%);
+  --muted: color-mix(in srgb, #f6f3ea 76%, #101b31 24%);
+  --faint: color-mix(in srgb, #f6f3ea 52%, #101b31 48%);
+  --line: color-mix(in srgb, #35c6d2 24%, #101b31 76%);
   --accent: #35c6d2;
   --accent-fg: #101b31;
   --accent-soft: color-mix(in srgb, #35c6d2 16%, transparent);
@@ -40,7 +40,7 @@
   --gold-soft: color-mix(in srgb, #e7b34e 16%, transparent);
   --mint: #69d5ad;
   --mint-soft: color-mix(in srgb, #69d5ad 16%, transparent);
-  --grid-dot: color-mix(in srgb, #35c6d2 14%, transparent);
+  --grid-dot: color-mix(in srgb, #35c6d2 18%, transparent);
 }
 
 html.light {
@@ -48,9 +48,9 @@ html.light {
   --canvas: #f6f3ea;
   --canvas-elevated: color-mix(in srgb, #f6f3ea 72%, #ffffff 28%);
   --ink: #101b31;
-  --muted: color-mix(in srgb, #101b31 58%, #f6f3ea 42%);
-  --faint: color-mix(in srgb, #101b31 38%, #f6f3ea 62%);
-  --line: color-mix(in srgb, #101b31 14%, #f6f3ea 86%);
+  --muted: color-mix(in srgb, #101b31 72%, #f6f3ea 28%);
+  --faint: color-mix(in srgb, #101b31 50%, #f6f3ea 50%);
+  --line: color-mix(in srgb, #101b31 22%, #f6f3ea 78%);
   --accent: #35c6d2;
   --accent-fg: #101b31;
   --accent-soft: color-mix(in srgb, #35c6d2 16%, transparent);
