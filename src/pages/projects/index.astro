@@ -7,27 +7,36 @@ const projects = (await getCollection("projects")).sort((a, b) => {
   if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
   return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
 });
+const single = projects.length === 1;
 ---
 
 <PageLayout
   title="Projects"
-  description="Builds from the curriculum and a solo backend currently in development. No decorative dashboards — curl, CLIs, and pipelines."
+  description="Curriculum builds you can run. No decorative dashboards. Curl and a terminal."
 >
   <section class="wrap page-head">
     <p class="section-kicker">Builds</p>
     <h1 class="display mt-5">Projects</h1>
     <div class="rule-cyan mt-5"></div>
     <p class="lede mt-6">
-      Curriculum builds are small and runnable. The permission engine and hex inspector have no UI — terminal only. The sales intelligence platform is a separate, in-development system.
+      Small, runnable builds from the course. The permission engine has no UI. If you cannot curl it, it is not done.
     </p>
   </section>
   <section class="wrap pb-16 md:pb-20">
-    <div class="grid min-w-0 gap-5 md:grid-cols-2">
-      {
-        projects.map((project) => (
-          <ProjectCard project={project} />
-        ))
-      }
-    </div>
+    {
+      single ? (
+        <div class="min-w-0">
+          {projects.map((project) => (
+            <ProjectCard project={project} featured />
+          ))}
+        </div>
+      ) : (
+        <div class="grid min-w-0 gap-5 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      )
+    }
   </section>
 </PageLayout>
