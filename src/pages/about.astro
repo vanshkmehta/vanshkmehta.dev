@@ -34,7 +34,8 @@ const stack = [
     <div class="rule-cyan mt-5"></div>
   </section>
 
-  <section class="wrap max-w-[46rem] min-w-0 space-y-6 pb-16 text-[1.02rem] leading-relaxed text-muted md:pb-20">
+  <section class="wrap pb-16 md:pb-20">
+    <div class="max-w-[46rem] min-w-0 space-y-6 text-[1.02rem] leading-relaxed text-muted">
     <p class="text-ink">
       I’m {SITE.name}, a {SITE.role} at {SITE.employer} in Mumbai, working across Java, Spring Boot, distributed systems, cloud infrastructure, and event-driven architecture.
     </p>
@@ -141,5 +142,6 @@ const stack = [
     <p>
       <a class="text-accent hover:underline break-all" href={`mailto:${SITE.email}`}>{SITE.email}</a>
     </p>
+    </div>
   </section>
 </PageLayout>
