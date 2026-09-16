@@ -1,4 +1,4 @@
-# build
+# build / generated (never commit .astro content-modules or data-store)
 dist/
 .astro/
 

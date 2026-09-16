@@ -1,8 +1,25 @@
 import { defineCollection, z } from "astro:content";
-import { glob } from "astro/loaders";
+import { glob, type Loader } from "astro/loaders";
+
+/**
+ * glob() warns and returns when a folder has zero matches, so it never
+ * deletes cached entries. Cloudflare restores `node_modules/.astro` (the
+ * production data store) between builds, which left a stale
+ * `s1-bitwise.mdx` import in `.astro/content-modules.mjs`.
+ */
+function globAllowEmpty(options: Parameters<typeof glob>[0]): Loader {
+  const inner = glob(options);
+  return {
+    name: inner.name,
+    load: async (context) => {
+      context.store.clear();
+      await inner.load(context);
+    },
+  };
+}
 
 const notes = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/notes" }),
+  loader: globAllowEmpty({ pattern: "**/*.{md,mdx}", base: "./src/content/notes" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
