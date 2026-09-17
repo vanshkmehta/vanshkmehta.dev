@@ -1,11 +1,12 @@
 ---
 import { getCollection, render } from "astro:content";
 import PermissionDiagram from "../../components/diagrams/PermissionDiagram.astro";
+import { PATHS } from "../../data/site";
 import PageLayout from "../../layouts/PageLayout.astro";
 
 export async function getStaticPaths() {
-  const projects = await getCollection("projects");
-  return projects.map((project) => ({
+  const builds = await getCollection("projects");
+  return builds.map((project) => ({
     params: { slug: project.id },
     props: { project },
   }));
@@ -13,6 +14,8 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const kindLabel =
+  project.data.kind === "engine" ? "Engine" : project.data.kind === "cli" ? "CLI" : "SaaS";
 ---
 
 <PageLayout
@@ -25,7 +28,8 @@ const { Content } = await render(project);
     <div class="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-start">
       <header class="min-w-0">
         <p class="caption text-accent">
-          {project.data.kind}
+          {kindLabel}
+          {project.data.featured && " · Featured Build"}
           {project.data.status === "in-development" && " · in development"}
         </p>
         <h1 class="display mt-4">{project.data.title}</h1>
@@ -59,7 +63,7 @@ const { Content } = await render(project);
       <Content />
     </div>
     <p class="mt-12">
-      <a class="font-mono text-xs text-accent hover:underline" href="/projects">← All projects</a>
+      <a class="font-mono text-xs text-accent hover:underline" href={PATHS.build}>← All builds</a>
     </p>
   </article>
 </PageLayout>

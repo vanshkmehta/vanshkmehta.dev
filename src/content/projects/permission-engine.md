@@ -1,6 +1,6 @@
 ---
-title: "Permission engine (bitmask RBAC)"
-description: "Roles and actions as bits. Check is AND. Grant is OR. Revoke is AND-NOT. No UI. Curl and a terminal."
+title: "Permission Engine"
+description: "A Java 17 Role-Based Access Control (RBAC) engine built around bitmasks. Permissions become bits. Check is AND. Grant is OR. Revoke is AND-NOT."
 pubDate: 2026-09-10
 status: shipped
 featured: true
@@ -19,7 +19,7 @@ interfaceNote: "No UI. Curl and a terminal."
 
 Access control often grows a table: users, roles, permissions, join rows, a cache, then a mismatch. For a small, closed set of actions, that is the wrong shape. The question is binary. The set is tiny. Store it as bits.
 
-This is the Season 1 build for bitwise manipulation. Take the whiteboard algebra and put a process around it.
+This is the Season 1 build for bitwise manipulation. Take the bitwise algebra and put a process around it.
 
 ## Decisions
 

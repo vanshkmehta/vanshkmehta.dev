@@ -1,6 +1,6 @@
 # vanshkmehta.dev
 
-Personal site for **Vanshit Mehta** — backend engineer at Jio Platforms, Mumbai. Home for CS-curriculum notes and builds. The class is on [YouTube](https://www.youtube.com/@vanshkmehta).
+Personal site for **Vansh Mehta**, Backend Engineer at Jio and Computer Science Educator. Home for a fundamentals-first CS course, notes, and builds. The class is on [YouTube](https://www.youtube.com/@vanshkmehta).
 
 - Site: https://vanshkmehta.dev
 - YouTube: https://www.youtube.com/@vanshkmehta

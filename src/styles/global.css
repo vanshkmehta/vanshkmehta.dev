@@ -430,38 +430,6 @@ html.light .prose-note .astro-code span {
   border-color: var(--accent);
 }
 
-.mode-chip {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  white-space: nowrap;
-  border: 1px solid;
-  padding: 0.14rem 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.mode-chip-whiteboard {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  background: var(--accent-soft);
-}
-
-.mode-chip-questions {
-  color: var(--gold);
-  border-color: color-mix(in srgb, var(--gold) 55%, transparent);
-  background: var(--gold-soft);
-}
-
-.mode-chip-build {
-  color: var(--mint);
-  border-color: color-mix(in srgb, var(--mint) 55%, transparent);
-  background: var(--mint-soft);
-}
-
 .btn-primary {
   display: inline-flex;
   align-items: center;

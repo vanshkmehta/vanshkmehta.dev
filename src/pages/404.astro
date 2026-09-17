@@ -1,4 +1,5 @@
 ---
+import { PATHS } from "../data/site";
 import PageLayout from "../layouts/PageLayout.astro";
 ---
 
@@ -7,11 +8,12 @@ import PageLayout from "../layouts/PageLayout.astro";
     <p class="caption text-accent">404</p>
     <h1 class="display mt-4">No such address.</h1>
     <div class="rule-cyan mt-5"></div>
-    <p class="lede mt-6">Nothing here. Try home, the course, or projects.</p>
+    <p class="lede mt-6">Nothing here. Try home, class, notes, or build.</p>
     <p class="mt-8 flex flex-wrap gap-4 font-mono text-sm">
       <a class="text-accent hover:underline" href="/">Home</a>
-      <a class="text-accent hover:underline" href="/course">Course</a>
-      <a class="text-accent hover:underline" href="/projects">Projects</a>
+      <a class="text-accent hover:underline" href={PATHS.course}>Class</a>
+      <a class="text-accent hover:underline" href={PATHS.notes}>Notes</a>
+      <a class="text-accent hover:underline" href={PATHS.build}>Build</a>
     </p>
   </section>
 </PageLayout>

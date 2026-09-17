@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import NoteCard from "../../components/NoteCard.astro";
 import { seasons } from "../../data/seasons";
+import { PATHS } from "../../data/site";
 import { formatDate } from "../../lib/utils";
 import PageLayout from "../../layouts/PageLayout.astro";
 
@@ -18,17 +19,17 @@ const bySeason = seasons
 
 <PageLayout
   title="Notes"
-  description="Study notes for the CS course. One post per topic: whiteboard, questions, build."
+  description="Concepts, explained and connected. Study notes for the Computer Science course, all in one place."
 >
   <section class="wrap page-head">
-    <p class="section-kicker">Study guides</p>
-    <h1 class="display mt-5">Notes</h1>
+    <p class="section-kicker">Notes</p>
+    <h1 class="display mt-5">Concepts, Explained and Connected.</h1>
     <div class="rule-cyan mt-5"></div>
     <p class="lede mt-6">
       {
         notes.length === 0
-          ? "Study sheets for the course. Nothing published yet."
-          : "One note per topic: whiteboard, interview problems, then the build."
+          ? "Videos explain. Notes help you remember. Nothing published yet."
+          : "Each lesson comes with concepts, diagrams, examples, interview questions, and key takeaways, all in one place."
       }
     </p>
   </section>
@@ -39,7 +40,7 @@ const bySeason = seasons
         <div class="card max-w-[40rem] px-6 py-12">
           <p class="title text-ink">Notes coming soon.</p>
           <p class="mt-3 text-sm leading-relaxed text-muted">
-            I will publish study sheets here as Season 1 ships. For now, the class is on YouTube.
+            Read before the lesson. Use while learning. Revisit before the interview.
           </p>
         </div>
       ) : (
@@ -51,7 +52,7 @@ const bySeason = seasons
                   <span class="font-mono text-sm text-accent">{season.code}</span>
                   <span class="ml-3">{season.title}</span>
                 </h2>
-                <a class="caption shrink-0 text-muted hover:text-accent" href={`/course/${season.slug}`}>
+                <a class="caption shrink-0 text-muted hover:text-accent" href={`${PATHS.course}/${season.slug}`}>
                   Season page
                 </a>
               </div>
@@ -63,7 +64,6 @@ const bySeason = seasons
                     title={note.data.topic}
                     description={note.data.description}
                     meta={formatDate(note.data.pubDate)}
-                    showModes
                   />
                 ))}
               </div>

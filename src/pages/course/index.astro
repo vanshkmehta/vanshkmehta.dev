@@ -1,5 +1,4 @@
 ---
-import ModeChips from "../../components/ModeChips.astro";
 import SeasonCard from "../../components/SeasonCard.astro";
 import { seasons } from "../../data/seasons";
 import PageLayout from "../../layouts/PageLayout.astro";
@@ -8,17 +7,22 @@ const filming = seasons.find((s) => s.status === "filming");
 ---
 
 <PageLayout
-  title="Course"
-  description="Sixteen seasons. Whiteboard, interview problems, then a build you can run. Currently filming Season 1: Memory & Low-Level."
+  title="The Roadmap"
+  description="16 seasons. One connected journey through Computer Science, from memory and data structures to distributed systems, backend engineering, and machine learning."
 >
   <section class="wrap page-head">
-    <p class="section-kicker">Curriculum</p>
-    <h1 class="display mt-5 max-w-2xl">A CS course, in the order I wish I had been taught.</h1>
+    <p class="section-kicker">The Roadmap</p>
+    <h1 class="display mt-5 max-w-2xl">16 seasons. One connected journey.</h1>
     <div class="rule-cyan mt-5"></div>
     <p class="lede mt-6">
-      Sixteen seasons, from bits to machine learning. Each topic is three parts: board, then questions, then a small build. Class is on YouTube. Notes will live here when they are ready.
+      Computer Science is not a collection of isolated subjects.
     </p>
-    <ModeChips class="mt-6" />
+    <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+      A data structure connects to memory. An operating system connects to processes and memory. A network connects to operating systems. A distributed system builds on networks, storage, concurrency, and failure.
+    </p>
+    <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+      So the course is structured as a connected path, not a pile of playlists.
+    </p>
     {
       filming && (
         <p class="mt-5 font-mono text-xs text-accent">

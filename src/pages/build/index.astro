@@ -1,0 +1,46 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { PATHS } from "../../data/site";
+import PageLayout from "../../layouts/PageLayout.astro";
+
+const builds = (await getCollection("projects")).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+const single = builds.length === 1;
+---
+
+<PageLayout
+  title="Build"
+  description="Turn the idea into code. Small, runnable builds from the Computer Science course."
+>
+  <section class="wrap page-head">
+    <p class="section-kicker">Build</p>
+    <h1 class="display mt-5">Turn the Idea Into Code.</h1>
+    <div class="rule-cyan mt-5"></div>
+    <p class="lede mt-6">
+      This is where theory gets tested. Take a concept. Write the code. Run it. Break it. Understand why it broke.
+    </p>
+    <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
+      The builds are small enough to understand and practical enough to run.
+    </p>
+  </section>
+  <section class="wrap pb-16 md:pb-20">
+    {
+      single ? (
+        <div class="min-w-0">
+          {builds.map((build) => (
+            <ProjectCard project={build} featured />
+          ))}
+        </div>
+      ) : (
+        <div class="grid min-w-0 gap-5 md:grid-cols-2">
+          {builds.map((build) => (
+            <ProjectCard project={build} />
+          ))}
+        </div>
+      )
+    }
+  </section>
+</PageLayout>

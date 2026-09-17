@@ -1,6 +1,5 @@
 ---
 import { getCollection, render } from "astro:content";
-import ModeChips from "../../components/ModeChips.astro";
 import { formatDate } from "../../lib/utils";
 import PageLayout from "../../layouts/PageLayout.astro";
 
@@ -32,7 +31,6 @@ const { Content } = await render(note);
       </h1>
       <p class="lede mt-4">{note.data.description}</p>
       <div class="mt-5 flex min-w-0 flex-wrap items-center gap-3">
-        <ModeChips />
         <span class="font-mono text-[11px] text-faint">{formatDate(note.data.pubDate)}</span>
         <span class="font-mono text-[11px] text-faint">{note.data.level}</span>
       </div>
