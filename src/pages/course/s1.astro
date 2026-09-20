@@ -1,10 +1,13 @@
 ---
-import { getSeason } from "../../data/seasons";
+import ClassCard from "../../components/ClassCard.astro";
+import { featuredClass, getSeason, liveEpisodes, queuedEpisodeIds, youtubeWatchUrl } from "../../data/seasons";
 import { PATHS, SITE } from "../../data/site";
 import PageLayout from "../../layouts/PageLayout.astro";
 
 const season = getSeason(1);
 if (!season) throw new Error("Season 1 missing");
+const latestClass = featuredClass();
+const latestLive = latestClass?.season.id === season.id ? latestClass.episode : undefined;
 ---
 
 <PageLayout
@@ -18,30 +21,95 @@ if (!season) throw new Error("Season 1 missing");
     <h1 class="display mt-4">{season.title}</h1>
     <div class="rule-cyan mt-5"></div>
     <p class="lede mt-6">{season.pitch}</p>
-    <p class="mt-6 max-w-[40rem] text-sm leading-relaxed text-muted">
-      Topic list for the season. Notes will show up here as each lesson ships.
-    </p>
+    {
+      latestLive ? (
+        <p class="mt-6 max-w-[40rem] text-sm leading-relaxed text-muted">
+          {latestLive.id} is live. The rest of the season is still filming. Notes for this topic after the Build ships.
+        </p>
+      ) : (
+        <p class="mt-6 max-w-[40rem] text-sm leading-relaxed text-muted">
+          Topic list for the season. Notes will show up here as each lesson ships.
+        </p>
+      )
+    }
     <p class="mt-3 max-w-[40rem] text-sm leading-relaxed text-muted">
       Class:
       {" "}
-      <a class="text-accent hover:underline" href={SITE.youtube}>youtube.com/@vanshkmehta</a>
+      <a class="text-accent hover:underline" href={latestLive ? youtubeWatchUrl(latestLive.youtubeId) : SITE.youtube} target="_blank" rel="noopener noreferrer">
+        {latestLive ? `Watch ${latestLive.id} on YouTube` : "youtube.com/@vanshkmehta"}
+      </a>
     </p>
   </section>
 
   <section class="wrap pb-16 md:pb-20">
+    {
+      latestClass?.season.id === season.id && (
+        <div class="mb-8">
+          <ClassCard episode={latestClass.episode} season={latestClass.season} />
+        </div>
+      )
+    }
     <ol class="grid min-w-0 gap-3">
       {
         season.topics.map((topic, i) => {
-          const href = topic.noteId ? `/notes/${topic.noteId}` : undefined;
-          return (
-            <li class="min-w-0">
-              {href ? (
-                <a href={href} class="card card-hover flex min-w-0 flex-col gap-4 p-6 no-underline md:flex-row md:items-start">
+          const live = liveEpisodes(topic);
+          const queued = queuedEpisodeIds(topic);
+          const noteHref = topic.noteId ? `/notes/${topic.noteId}` : undefined;
+          const hasLive = live.length > 0;
+
+          if (hasLive) {
+            return (
+              <li class="min-w-0">
+                <article class="card flex min-w-0 flex-col gap-4 p-6 md:flex-row md:items-start">
                   <span class="shrink-0 font-mono text-sm text-accent">E{i + 1}</span>
                   <div class="min-w-0 flex-1">
                     <h2 class="title text-ink">{topic.title}</h2>
                     <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
-                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
+                    <ul class="mt-4 space-y-3">
+                      {live.map((episode) => (
+                        <li>
+                          <a
+                            class="block min-w-0 no-underline"
+                            href={youtubeWatchUrl(episode.youtubeId)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <p class="font-mono text-[11px] text-accent">{episode.id} · Live</p>
+                            <p class="mt-1 text-sm text-ink">{episode.title}</p>
+                            {episode.subtitle && (
+                              <p class="mt-0.5 text-sm leading-relaxed text-muted">{episode.subtitle}</p>
+                            )}
+                            <p class="mt-2 font-mono text-xs text-accent">Watch on YouTube →</p>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                    {queued.length > 0 && (
+                      <p class="mt-4 font-mono text-[11px] text-faint">{queued.join(" · ")} · queued</p>
+                    )}
+                    <p class="mt-4 text-sm leading-relaxed text-muted">
+                      Notes for this topic after the Build ships.
+                    </p>
+                    {noteHref && (
+                      <p class="mt-3">
+                        <a class="caption text-accent hover:underline" href={noteHref}>Open the notes →</a>
+                      </p>
+                    )}
+                  </div>
+                </article>
+              </li>
+            );
+          }
+
+          return (
+            <li class="min-w-0">
+              {noteHref ? (
+                <a href={noteHref} class="card card-hover flex min-w-0 flex-col gap-4 p-6 no-underline md:flex-row md:items-start">
+                  <span class="shrink-0 font-mono text-sm text-accent">E{i + 1}</span>
+                  <div class="min-w-0 flex-1">
+                    <h2 class="title text-ink">{topic.title}</h2>
+                    <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
+                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodes.map((episode) => episode.id).join(" · ")}</p>
                   </div>
                 </a>
               ) : (
@@ -50,7 +118,7 @@ if (!season) throw new Error("Season 1 missing");
                   <div class="min-w-0 flex-1">
                     <h2 class="title">{topic.title}</h2>
                     <p class="mt-1 text-sm leading-relaxed text-muted">{topic.summary}</p>
-                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodeIds.join(" · ")}</p>
+                    <p class="mt-2 font-mono text-[11px] text-faint">{topic.episodes.map((episode) => episode.id).join(" · ")}</p>
                   </div>
                   <p class="caption shrink-0 text-faint">Queued</p>
                 </article>

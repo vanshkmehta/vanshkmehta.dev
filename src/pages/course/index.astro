@@ -1,9 +1,10 @@
 ---
 import SeasonCard from "../../components/SeasonCard.astro";
-import { seasons } from "../../data/seasons";
+import { featuredClass, seasons } from "../../data/seasons";
 import PageLayout from "../../layouts/PageLayout.astro";
 
 const filming = seasons.find((s) => s.status === "filming");
+const latestClass = featuredClass();
 ---
 
 <PageLayout
@@ -27,6 +28,7 @@ const filming = seasons.find((s) => s.status === "filming");
       filming && (
         <p class="mt-5 font-mono text-xs text-accent">
           Now filming {filming.code}: {filming.title}
+          {latestClass ? ` · ${latestClass.episode.id} live` : ""}
         </p>
       )
     }
