@@ -1,12 +1,49 @@
 export type SeasonStatus = "filming" | "queued";
 
+export type QueuedEpisode = {
+  id: string;
+};
+
+export type LiveEpisode = {
+  id: string;
+  youtubeId: string;
+  title: string;
+  subtitle?: string;
+  blurb: string;
+  featured?: boolean;
+};
+
+export type Episode = QueuedEpisode | LiveEpisode;
+
 export type Topic = {
   slug: string;
   title: string;
-  episodeIds: string[];
+  episodes: Episode[];
   noteId: string | null;
   summary: string;
 };
+
+export type FeaturedClass = {
+  season: Season;
+  topic: Topic;
+  episode: LiveEpisode;
+};
+
+export function isLiveEpisode(episode: Episode): episode is LiveEpisode {
+  return "youtubeId" in episode && Boolean(episode.youtubeId);
+}
+
+export function youtubeWatchUrl(youtubeId: string): string {
+  return `https://www.youtube.com/watch?v=${youtubeId}`;
+}
+
+export function youtubeThumbUrl(youtubeId: string): string {
+  return `https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`;
+}
+
+function queued(...ids: string[]): QueuedEpisode[] {
+  return ids.map((id) => ({ id }));
+}
 
 export type Season = {
   id: number;
@@ -31,7 +68,19 @@ export const seasons: Season[] = [
       {
         slug: "bitwise",
         title: "Bitwise Manipulation",
-        episodeIds: ["S1E1.1", "S1E1.2", "S1E1.3"],
+        episodes: [
+          {
+            id: "S1E1.1",
+            youtubeId: "bY6eUL4CgCw",
+            title: "Bitwise Manipulation Explained",
+            subtitle: "Two's Complement, Masks & Flags",
+            blurb:
+              "What binary actually is. How two's complement stores a negative. How a mask checks, sets, or clears a flag.",
+            featured: true,
+          },
+          { id: "S1E1.2" },
+          { id: "S1E1.3" },
+        ],
         noteId: null,
         summary:
           "AND, OR, XOR, shifts, and masks. The algebra of flags, permissions, and compact state.",
@@ -39,7 +88,7 @@ export const seasons: Season[] = [
       {
         slug: "integers",
         title: "Integer Representation",
-        episodeIds: ["S1E2.1", "S1E2.2", "S1E2.3"],
+        episodes: queued("S1E2.1", "S1E2.2", "S1E2.3"),
         noteId: null,
         summary:
           "Two’s complement, endianness, overflow, and why 0xFFFFFFFF is −1 on a 32-bit signed int.",
@@ -47,7 +96,7 @@ export const seasons: Season[] = [
       {
         slug: "layout",
         title: "Pointers, Arrays & Struct Layout",
-        episodeIds: ["S1E3.1", "S1E3.2", "S1E3.3"],
+        episodes: queued("S1E3.1", "S1E3.2", "S1E3.3"),
         noteId: null,
         summary:
           "Addresses, padding, alignment, and the difference between a pointer and the thing it names.",
@@ -55,7 +104,7 @@ export const seasons: Season[] = [
       {
         slug: "cache",
         title: "Cache, Locality & Alignment",
-        episodeIds: ["S1E4.1", "S1E4.2", "S1E4.3"],
+        episodes: queued("S1E4.1", "S1E4.2", "S1E4.3"),
         noteId: null,
         summary:
           "Cache lines, false sharing, and why row-major loops are not a style choice.",
@@ -63,7 +112,7 @@ export const seasons: Season[] = [
       {
         slug: "allocators",
         title: "Stack, Heap & Simple Allocators",
-        episodeIds: ["S1E5.1", "S1E5.2", "S1E5.3"],
+        episodes: queued("S1E5.1", "S1E5.2", "S1E5.3"),
         noteId: null,
         summary:
           "Call stacks, malloc’s contract, and a bump/free-list allocator you can step through.",
@@ -228,4 +277,29 @@ export function getSeason(id: number): Season | undefined {
 
 export function filmingSeason(): Season {
   return seasons.find((s) => s.status === "filming") ?? seasons[0];
+}
+
+export function liveEpisodes(topic: Topic): LiveEpisode[] {
+  return topic.episodes.filter(isLiveEpisode);
+}
+
+export function queuedEpisodeIds(topic: Topic): string[] {
+  return topic.episodes.filter((episode) => !isLiveEpisode(episode)).map((episode) => episode.id);
+}
+
+export function featuredClass(): FeaturedClass | undefined {
+  let featured: FeaturedClass | undefined;
+  let fallback: FeaturedClass | undefined;
+
+  for (const season of seasons) {
+    for (const topic of season.topics) {
+      for (const episode of liveEpisodes(topic)) {
+        const current = { season, topic, episode };
+        fallback = current;
+        if (episode.featured) featured = current;
+      }
+    }
+  }
+
+  return featured ?? fallback;
 }

@@ -1,8 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+import ClassCard from "../components/ClassCard.astro";
 import NoteCard from "../components/NoteCard.astro";
 import PermissionDiagram from "../components/diagrams/PermissionDiagram.astro";
 import SeasonTerminal from "../components/SeasonTerminal.astro";
+import { featuredClass, youtubeWatchUrl } from "../data/seasons";
 import { PATHS, SITE } from "../data/site";
 import { formatDate } from "../lib/utils";
 import PageLayout from "../layouts/PageLayout.astro";
@@ -14,6 +16,8 @@ const builds = await getCollection("projects");
 const featured = builds.find((p) => p.data.featured) ?? builds[0];
 const latestNotes = notes.slice(0, 3);
 const featuredHref = featured ? `${PATHS.build}/${featured.id}` : PATHS.build;
+const latestClass = featuredClass();
+const watchHref = latestClass ? youtubeWatchUrl(latestClass.episode.youtubeId) : SITE.youtube;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -74,32 +78,46 @@ const jsonLd = {
       <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
         We start with the fundamentals, break down the problem, and connect the idea to how software is really built.
       </p>
-      <a
-        href={SITE.youtube}
-        class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <div class="flex min-h-40 min-w-0 items-center justify-center border-b border-line bg-[var(--canvas)] px-6 py-10 lg:border-r lg:border-b-0">
-          <div class="min-w-0 text-center">
-            <p class="caption text-accent">Currently exploring</p>
-            <p class="mt-3 font-mono text-sm text-ink">S01 · Memory &amp; Low-Level</p>
-            <p class="mt-2 truncate font-mono text-xs text-muted">▶ youtube.com/@vanshkmehta</p>
+      {
+        latestClass ? (
+          <div class="mt-8">
+            <ClassCard
+              episode={latestClass.episode}
+              season={latestClass.season}
+              eager
+            />
           </div>
-        </div>
-        <div class="min-w-0 p-6 sm:p-8">
-          <h3 class="title text-ink">Memory &amp; Low-Level</h3>
-          <p class="mt-3 text-sm leading-relaxed text-muted">
-            Starting with bits, memory, pointers, and the foundations closest to the machine.
+        ) : (
+          <a
+            href={SITE.youtube}
+            class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="flex min-h-40 min-w-0 items-center justify-center border-b border-line bg-[var(--canvas)] px-6 py-10 lg:border-r lg:border-b-0">
+              <div class="min-w-0 text-center">
+                <p class="caption text-accent">Currently exploring</p>
+                <p class="mt-3 font-mono text-sm text-ink">S01 · Memory &amp; Low-Level</p>
+                <p class="mt-2 truncate font-mono text-xs text-muted">▶ youtube.com/@vanshkmehta</p>
+              </div>
+            </div>
+            <div class="min-w-0 p-6 sm:p-8">
+              <h3 class="title text-ink">Memory &amp; Low-Level</h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted">
+                Starting with bits, memory, pointers, and the foundations closest to the machine.
+              </p>
+              <p class="mt-6 font-mono text-xs text-accent">Watch the latest class →</p>
+            </div>
+          </a>
+        )
+      }
+      {
+        latestClass && (
+          <p class="mt-4 max-w-[40rem] text-sm leading-relaxed text-muted">
+            Notes for this topic after the Build ships.
           </p>
-          <p class="mt-4 text-sm leading-relaxed text-ink">
-            Less memorisation.
-            <br />
-            More “oh, now I get it.”
-          </p>
-          <p class="mt-6 font-mono text-xs text-accent">Watch the latest class →</p>
-        </div>
-      </a>
+        )
+      }
       <p class="mt-4">
         <a class="caption text-accent hover:underline" href={PATHS.course}>See the roadmap →</a>
       </p>
@@ -137,7 +155,7 @@ const jsonLd = {
           <div class="card mt-8 px-6 py-10">
             <p class="title text-ink">Notes coming soon.</p>
             <p class="mt-2 text-sm leading-relaxed text-muted">
-              Study sheets for the course. Nothing published yet.
+              Study sheets for the course. Nothing published yet. Notes for this topic after the Build ships.
             </p>
           </div>
         )
@@ -175,6 +193,9 @@ const jsonLd = {
                 Grant → OR
                 <br />
                 Revoke → AND-NOT
+              </p>
+              <p class="mt-4 text-sm leading-relaxed text-muted">
+                Pairs with the bitwise class. The Build video is not up yet.
               </p>
               <p class="mt-4 text-sm leading-relaxed text-muted">
                 A small build.
@@ -225,7 +246,7 @@ const jsonLd = {
       <p class="mt-3 text-[1.02rem] leading-relaxed text-ink">Welcome to the course.</p>
       <div class="mt-8 flex flex-wrap gap-2">
         <a class="btn-primary" href={PATHS.course}>The roadmap</a>
-        <a class="btn-ghost" href={SITE.youtube} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+        <a class="btn-ghost" href={watchHref} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
       </div>
     </section>
   </div>
