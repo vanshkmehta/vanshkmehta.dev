@@ -1,6 +1,6 @@
 ---
 import type { Season } from "../data/seasons";
-import { liveEpisodes } from "../data/seasons";
+import { countEpisodes, liveEpisodes } from "../data/seasons";
 
 interface Props {
   season: Season;
@@ -9,9 +9,11 @@ interface Props {
 const { season } = Astro.props;
 const href = season.id === 1 ? `/course/${season.slug}` : undefined;
 const topicCount = season.topics.length;
+const episodeCount = countEpisodes(season);
 const liveIds = season.topics.flatMap((topic) => liveEpisodes(topic).map((episode) => episode.id));
 const liveLabel =
   liveIds.length === 1 ? `${liveIds[0]} live` : liveIds.length > 1 ? `${liveIds.length} live` : "season page";
+const counts = `${topicCount} ${topicCount === 1 ? "topic" : "topics"} · ${episodeCount} ${episodeCount === 1 ? "episode" : "episodes"}`;
 ---
 
 {
@@ -24,7 +26,7 @@ const liveLabel =
       <h3 class="title mt-4 line-clamp-2 text-ink">{season.title}</h3>
       <p class="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{season.pitch}</p>
       <p class="mt-5 font-mono text-[11px] text-faint">
-        {topicCount} topics · {liveLabel}
+        {counts} · {liveLabel}
       </p>
     </a>
   ) : (
@@ -35,6 +37,7 @@ const liveLabel =
       </div>
       <h3 class="title mt-4 line-clamp-2 text-ink">{season.title}</h3>
       <p class="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted">{season.pitch}</p>
+      <p class="mt-5 font-mono text-[11px] text-faint">{counts}</p>
     </article>
   )
 }

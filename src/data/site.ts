@@ -1,11 +1,14 @@
+import { curriculumTotals } from "./seasons";
+
+const totals = curriculumTotals();
+
 export const SITE = {
   name: "Vansh Mehta",
   shortName: "vanshkmehta",
   markName: "VANSH MEHTA",
   title: "Vansh Mehta | Backend Engineer at Jio & Computer Science Educator",
   tagline: "Backend Engineer at Jio. Computer Science Educator.",
-  description:
-    "Learn Computer Science through a practical, fundamentals-first course covering memory, data structures, operating systems, distributed systems, machine learning, coding interviews, and backend engineering.",
+  description: `Learn Computer Science through a practical, fundamentals-first course: ${totals.seasons} seasons, ${totals.topics} topics, and ${totals.episodes} episodes, from memory and low-level programming through systems, networks, and architecture to machine learning.`,
   url: "https://vanshkmehta.dev",
   locale: "en_IN",
   email: "vanshitkalpeshmehta4@gmail.com",

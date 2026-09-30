@@ -1,11 +1,11 @@
 ---
-const lines = [
-  { code: "S1", title: "Memory & Low-Level", state: "filming" },
-  { code: "S2", title: "Data Structures I", state: "queued" },
-  { code: "S8", title: "Operating Systems", state: "queued" },
-  { code: "S12", title: "Distributed Systems", state: "queued" },
-  { code: "S16", title: "Machine Learning", state: "queued" },
-];
+import type { Season } from "../data/seasons";
+import { seasons } from "../data/seasons";
+
+const previewIds = [1, 2, 8, 12, 16];
+const lines = previewIds
+  .map((id) => seasons.find((season) => season.id === id))
+  .filter((season): season is Season => season !== undefined);
 ---
 
 <div class="card min-w-0 overflow-hidden font-mono text-[12px] leading-6 text-muted">
@@ -19,16 +19,16 @@ const lines = [
     <p class="truncate text-faint">$ course ls --seasons</p>
     <ul class="mt-3 space-y-1">
       {
-        lines.map((line) => (
+        lines.map((season) => (
           <li class="grid min-w-0 grid-cols-[2.25rem_minmax(0,1fr)_auto] gap-2">
-            <span class="text-accent">{line.code}</span>
-            <span class="truncate text-ink">{line.title}</span>
-            <span class:list={["shrink-0", line.state === "filming" ? "text-gold" : "text-faint"]}>{line.state}</span>
+            <span class="text-accent">{season.code}</span>
+            <span class="truncate text-ink" title={season.title}>{season.title}</span>
+            <span class:list={["shrink-0", season.status === "filming" ? "text-gold" : "text-faint"]}>{season.status}</span>
           </li>
         ))
       }
     </ul>
-    <p class="mt-4 text-faint">16 seasons · one connected journey</p>
+    <p class="mt-4 text-faint">{seasons.length} seasons · one connected journey</p>
     <p class="text-accent">_</p>
   </div>
 </div>
