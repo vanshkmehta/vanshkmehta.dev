@@ -1,19 +1,21 @@
 ---
 import SeasonCard from "../../components/SeasonCard.astro";
-import { featuredClass, seasons } from "../../data/seasons";
+import { curriculumTotals, featuredClass, seasons } from "../../data/seasons";
 import PageLayout from "../../layouts/PageLayout.astro";
 
 const filming = seasons.find((s) => s.status === "filming");
 const latestClass = featuredClass();
+const totals = curriculumTotals();
+const description = `${totals.seasons} seasons, ${totals.topics} topics, ${totals.episodes} episodes. One connected journey through Computer Science, from memory and low-level programming through operating systems, networks, and architecture to machine learning.`;
 ---
 
 <PageLayout
   title="The Roadmap"
-  description="16 seasons. One connected journey through Computer Science, from memory and data structures to distributed systems, backend engineering, and machine learning."
+  description={description}
 >
   <section class="wrap page-head">
     <p class="section-kicker">The Roadmap</p>
-    <h1 class="display mt-5 max-w-2xl">16 seasons. One connected journey.</h1>
+    <h1 class="display mt-5 max-w-2xl">{totals.seasons} seasons. One connected journey.</h1>
     <div class="rule-cyan mt-5"></div>
     <p class="lede mt-6">
       Computer Science is not a collection of isolated subjects.
@@ -23,6 +25,9 @@ const latestClass = featuredClass();
     </p>
     <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
       So the course is structured as a connected path, not a pile of playlists.
+    </p>
+    <p class="mt-5 font-mono text-xs text-faint">
+      {totals.topics} topics · {totals.episodes} episodes
     </p>
     {
       filming && (
