@@ -11,7 +11,7 @@ export function personLd() {
     name: SITE.name,
     alternateName: [PROFILE.legalName, "Vansh K Mehta", "vanshkmehta"],
     url: SITE.url,
-    image: `${SITE.url}/og.png`,
+    image: `${SITE.url}/vansh.webp`,
     email: SITE.email,
     description: PROFILE.summary,
     jobTitle: PROFILE.role,
