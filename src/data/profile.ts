@@ -40,7 +40,7 @@ export const PROFILE = {
       image800: "/awards/star-performer-best-debutant-800.webp",
     },
     {
-      name: "Gold Medal, Anveshana 2023",
+      name: "Gold Medal and 3rd Prize, Anveshana 2023",
       org: "Anveshana",
       detail: "For Kavach, an Android women's safety app. It was also shortlisted for the Government of India Tech Innovation Awards.",
     },
@@ -49,7 +49,7 @@ export const PROFILE = {
     { value: "100K+", label: "enterprise users on the platform I work on" },
     { value: "-40%", label: "failed orders after provisioning" },
     { value: "-60%", label: "time to close production incidents" },
-    { value: "2", label: "awards: Jio CloudXP Star Performer and Anveshana Gold" },
+    { value: "2", label: "awards from Jio CloudXP and Anveshana" },
   ],
   /** The receipt on the home page. Each line is a resume bullet, shortened. */
   receipt: [
@@ -63,12 +63,12 @@ export const PROFILE = {
   ],
   /** Third person, for meta descriptions, structured data and llms.txt only. Not shown on pages. */
   summary:
-    "Vansh Mehta (also written Vanshit Mehta) is a backend engineer at Jio Platforms in Mumbai. He builds distributed infrastructure for Jio's cloud platform: asynchronous provisioning pipelines, quota and capacity validation, cross-database sync and disaster recovery workflows serving 100K+ enterprise users. He works in Java, Spring Boot, PostgreSQL, Oracle, RabbitMQ and Redis, won the Star Performer, Best Debutant award at Jio CloudXP and a Gold Medal at Anveshana 2023, and explains how software works on YouTube.",
+    "Vansh Mehta (also written Vanshit Mehta) is a backend engineer at Jio Platforms in Mumbai. He builds distributed infrastructure for Jio's cloud platform: asynchronous provisioning pipelines, quota and capacity validation, cross-database sync and disaster recovery workflows serving 100K+ enterprise users. He works in Java, Spring Boot, PostgreSQL, Oracle, RabbitMQ and Redis, won the Star Performer, Best Debutant award at Jio CloudXP and a Gold Medal and 3rd Prize at Anveshana 2023, and explains how software works on YouTube.",
   builds: [
     {
       name: "Kavach",
       year: "2023",
-      text: "A women's safety Android app with real-time SOS and location sharing, plus an admin portal for emergency response. Gold Medal at Anveshana 2023.",
+      text: "A women's safety Android app with real-time SOS and location sharing, plus an admin portal for emergency response. Gold Medal and 3rd Prize at Anveshana 2023.",
     },
     {
       name: "B2B Sales Intelligence",
@@ -93,7 +93,7 @@ export const PROFILE = {
     },
     {
       q: "What have you won?",
-      a: "Star Performer, Best Debutant at Jio CloudXP, for my work on Resource-Based Quota Management. Before that, a Gold Medal at Anveshana 2023 for Kavach, a women's safety app I built, which was also shortlisted for the Government of India Tech Innovation Awards.",
+      a: "Star Performer, Best Debutant at Jio CloudXP, for my work on Resource-Based Quota Management. Before that, a Gold Medal and 3rd Prize at Anveshana 2023 for Kavach, a women's safety app I built, which was also shortlisted for the Government of India Tech Innovation Awards.",
     },
     {
       q: "What do you work with?",
