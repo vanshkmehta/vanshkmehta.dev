@@ -1,10 +1,8 @@
 ---
 import { getCollection } from "astro:content";
-import ClassCard from "../components/ClassCard.astro";
+import ImpactReceipt from "../components/ImpactReceipt.astro";
 import NoteCard from "../components/NoteCard.astro";
-import PermissionDiagram from "../components/diagrams/PermissionDiagram.astro";
-import SeasonTerminal from "../components/SeasonTerminal.astro";
-import { featuredClass, youtubeWatchUrl } from "../data/seasons";
+import { PROFILE } from "../data/profile";
 import { PATHS, SITE } from "../data/site";
 import { formatDate } from "../lib/utils";
 import PageLayout from "../layouts/PageLayout.astro";
@@ -12,242 +10,161 @@ import PageLayout from "../layouts/PageLayout.astro";
 const notes = (await getCollection("notes")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const builds = await getCollection("projects");
-const featured = builds.find((p) => p.data.featured) ?? builds[0];
 const latestNotes = notes.slice(0, 3);
-const featuredHref = featured ? `${PATHS.build}/${featured.id}` : PATHS.build;
-const latestClass = featuredClass();
-const watchHref = latestClass ? youtubeWatchUrl(latestClass.episode.youtubeId) : SITE.youtube;
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: SITE.name,
-  url: SITE.url,
-  email: SITE.email,
-  jobTitle: SITE.role,
-  worksFor: { "@type": "Organization", name: SITE.employer },
-  address: { "@type": "PostalAddress", addressLocality: "Mumbai", addressCountry: "IN" },
-  sameAs: [SITE.youtube, SITE.github, SITE.linkedin],
-};
+const topics = "JAVA · SPRING BOOT · DISTRIBUTED SYSTEMS · RABBITMQ · POSTGRES · REDIS · KUBERNETES · AI INFRASTRUCTURE · ";
 ---
 
 <PageLayout>
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-
-  <section class="hero-atmosphere">
-    <div class="wrap grid min-w-0 items-center gap-10 py-16 md:py-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16 lg:py-24">
-      <div class="min-w-0">
-        <p class="caption text-accent">{SITE.tagline}</p>
-        <div class="rule-cyan mt-5"></div>
-        <h1 class="display mt-6 max-w-xl">What really happens when you run a line of code?</h1>
-        <p class="lede mt-6">
-          That question sits at the heart of everything I build and teach.
-        </p>
-        <p class="mt-5 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-          I’m {SITE.name}, a {SITE.role} at {SITE.employer}, Mumbai, and I’m teaching Computer Science in public, from the fundamentals beneath the code to the systems built on top of them.
-        </p>
-        <ul class="mt-6 space-y-1 text-[1.02rem] leading-relaxed text-muted">
-          <li>No memorising definitions.</li>
-          <li>No blindly solving hundreds of interview questions.</li>
-          <li>No treating Computer Science as disconnected topics.</li>
-        </ul>
-        <p class="mt-6 max-w-[40rem] text-[1.02rem] leading-relaxed text-ink">
-          Understand the concept. Solve the problem. Build the system.
-        </p>
-        <p class="mt-3 text-[1.02rem] leading-relaxed text-muted">That’s what this space is about.</p>
-        <div class="mt-8 flex flex-wrap gap-2">
-          <a class="btn-primary" href={PATHS.course}>Start with class</a>
-          <a class="btn-ghost" href={PATHS.notes}>Notes</a>
-          <a class="btn-ghost" href={PATHS.build}>Build</a>
-        </div>
+  <section class="relative overflow-hidden">
+    <div class="wrap relative min-w-0 pt-12 md:pt-16">
+      <div class="sticker absolute right-5 top-8 z-10 md:right-8 md:top-12" aria-hidden="true">
+        backend engineer at jio, mumbai
       </div>
-      <div class="min-w-0 lg:justify-self-stretch">
-        <SeasonTerminal />
+      <h1 class="poster-word" aria-label="Vansh Mehta">
+        <span>Vansh</span>
+        <span class="outline">Mehta</span>
+      </h1>
+      <div class="mt-8 grid min-w-0 items-end gap-8 md:grid-cols-2 md:gap-12">
+        <div class="min-w-0">
+          <p class="max-w-[20ch] font-serif text-[clamp(1.7rem,1.1rem+2.2vw,2.5rem)] italic leading-[1.1]">
+            Backend engineer. I build it, break it, explain it.
+          </p>
+          <p class="mt-4 max-w-[36ch] text-[1.02rem] leading-relaxed text-muted">
+            At Jio I build the cloud systems that 100K+ enterprise users depend on. On YouTube I show how things like that work.
+          </p>
+          <p class="mt-6 flex flex-wrap gap-2">
+            <a class="btn-primary" href={SITE.youtube} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+            <a class="btn-ghost" href="#contact">Say hello</a>
+          </p>
+        </div>
+        <ul class="index-list">
+          <li><a href="#impact">What I built at Jio <span aria-hidden="true">→</span></a></li>
+          <li><a href="#builds">My own builds <span aria-hidden="true">→</span></a></li>
+          <li><a href={PATHS.course}>The video seasons <span aria-hidden="true">→</span></a></li>
+          <li><a href={PATHS.about}>About me <span aria-hidden="true">→</span></a></li>
+        </ul>
       </div>
     </div>
+    <div class="ticker mt-10" aria-hidden="true"><div>{topics.repeat(6)}</div></div>
   </section>
 
-  <div class="wrap flex flex-col gap-16 py-16 md:gap-20 md:py-20">
-    <section class="min-w-0">
-      <p class="section-kicker">01 / Class</p>
-      <h2 class="title mt-4">Start Here. Go Deeper.</h2>
-      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-        Every lesson begins with a question: what is actually happening underneath the code?
-      </p>
-      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-        We start with the fundamentals, break down the problem, and connect the idea to how software is really built.
-      </p>
-      {
-        latestClass ? (
-          <div class="mt-8">
-            <ClassCard
-              episode={latestClass.episode}
-              season={latestClass.season}
-              eager
-            />
-          </div>
-        ) : (
-          <a
-            href={SITE.youtube}
-            class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div class="flex min-h-40 min-w-0 items-center justify-center border-b border-line bg-[var(--canvas)] px-6 py-10 lg:border-r lg:border-b-0">
-              <div class="min-w-0 text-center">
-                <p class="caption text-accent">Currently exploring</p>
-                <p class="mt-3 font-mono text-sm text-ink">S1 · Memory &amp; Low-Level Programming</p>
-                <p class="mt-2 truncate font-mono text-xs text-muted">▶ youtube.com/@vanshkmehta</p>
-              </div>
+  <div class="wrap flex flex-col gap-20 py-16 md:gap-28 md:py-24">
+    <section class="min-w-0" aria-labelledby="hi">
+      <h2 id="hi" class="display max-w-3xl">Hi, I'm Vansh.</h2>
+      <div class="mt-5 max-w-[42rem] space-y-4 text-[1.02rem] leading-relaxed text-muted">
+        <p>
+          I'm a backend engineer at Jio in Mumbai. Most of my day goes into making sure a cloud order doesn't fail halfway through, whether that means checking quotas up front, keeping queues moving or finding out why something broke at 2 a.m.
+        </p>
+        <p>
+          Outside work I build my own products and make videos about how software works underneath. I learn by building something and breaking it, so that is how I teach too.
+        </p>
+      </div>
+      <dl class="mt-10 grid min-w-0 grid-cols-2 gap-x-6 gap-y-8 border-t-2 border-ink pt-8 lg:grid-cols-4">
+        {
+          PROFILE.proof.map((p) => (
+            <div class="min-w-0">
+              <dt class="font-display text-[clamp(2.6rem,1.8rem+3.4vw,4.5rem)] font-black uppercase leading-[0.9]">{p.value}</dt>
+              <dd class="mt-2 text-sm leading-snug text-muted">{p.label}</dd>
             </div>
-            <div class="min-w-0 p-6 sm:p-8">
-              <h3 class="title text-ink">Memory &amp; Low-Level Programming</h3>
-              <p class="mt-3 text-sm leading-relaxed text-muted">
-                Starting with bits, memory, pointers, and the foundations closest to the machine.
-              </p>
-              <p class="mt-6 font-mono text-xs text-accent">Watch the latest class →</p>
-            </div>
-          </a>
-        )
-      }
-      {
-        latestClass && (
-          <p class="mt-4 max-w-[40rem] text-sm leading-relaxed text-muted">
-            Notes for this topic after the Build ships.
-          </p>
-        )
-      }
-      <p class="mt-4">
-        <a class="caption text-accent hover:underline" href={PATHS.course}>See the roadmap →</a>
-      </p>
+          ))
+        }
+      </dl>
     </section>
 
-    <section class="min-w-0">
-      <p class="section-kicker">02 / Notes</p>
-      <div class="mt-4 flex flex-wrap items-end justify-between gap-3">
-        <h2 class="title">Concepts, Explained and Connected.</h2>
-        <a class="caption text-accent hover:underline" href={PATHS.notes}>Open the notes →</a>
+    <section id="impact" class="grid min-w-0 scroll-mt-24 items-center gap-10 md:grid-cols-[minmax(0,1fr)_21.5rem] md:gap-16">
+      <div class="min-w-0">
+        <h2 class="display">What I built at Jio</h2>
+        <p class="lede mt-5">
+          Seven pieces of Jio's cloud platform that I designed or built, with what changed after each one.
+        </p>
+        <ul class="mt-6 max-w-[40rem] space-y-3 text-[1.02rem] leading-relaxed text-muted">
+          <li><span class="text-ink">Quota validation.</span> Bad orders get caught at the door, across VMs, block storage, security groups and HSM, instead of failing halfway through provisioning. Failed orders dropped 40%.</li>
+          <li><span class="text-ink">Async order pipeline.</span> RabbitMQ keeps compute, storage and network provisioning from blocking each other.</li>
+          <li><span class="text-ink">Ops diagnostics.</span> A way to trace a provisioning failure end to end. Closing a production incident now takes 60% less time.</li>
+        </ul>
+        <p class="mt-6"><a class="btn-ghost" href={PATHS.about}>The longer version</a></p>
       </div>
-      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-        Videos explain. Notes help you remember.
+      <div class="min-w-0 md:justify-self-end">
+        <div class="rotate-[1.2deg]"><ImpactReceipt /></div>
+      </div>
+    </section>
+
+    <section class="grid min-w-0 items-center gap-8 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:gap-14" aria-labelledby="recognition">
+      <figure class="min-w-0 md:-rotate-1">
+        <img
+          src={PROFILE.awards[0].image800}
+          srcset={`${PROFILE.awards[0].image800} 800w, ${PROFILE.awards[0].image} 1600w`}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          width="800"
+          height="582"
+          loading="lazy"
+          alt="Jio CloudXP certificate: Star Performer, Best Debutant, awarded to Vanshit Mehta for Resource-Based Quota Management."
+          class="w-full border-2 border-ink"
+        />
+      </figure>
+      <div class="min-w-0">
+        <p class="caption text-accent">Recognition</p>
+        <h2 id="recognition" class="display mt-3">Star Performer, Best Debutant</h2>
+        <p class="mt-4 text-[1.02rem] leading-relaxed text-muted">
+          Jio CloudXP gave me this for owning Resource-Based Quota Management end to end: the technical depth, and getting it delivered reliably.        </p>
+        <p class="mt-6 border-t border-line pt-5 text-[1.02rem] leading-relaxed text-muted">
+          <span class="text-ink">Before that:</span> a Gold Medal at Anveshana 2023 for Kavach, a women's safety app I built as a student. It was also shortlisted for the Government of India Tech Innovation Awards.
+        </p>
+      </div>
+    </section>
+
+    <section id="builds" class="min-w-0 scroll-mt-24">
+      <h2 class="display">What I'm building</h2>
+      <div class="mt-8 grid min-w-0 gap-4 md:grid-cols-3">
+        {
+          PROFILE.builds.map((b) => (
+            <article class="card min-w-0 p-6">
+              <p class="caption text-accent">{b.year}</p>
+              <h3 class="title mt-3">{b.name}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-muted">{b.text}</p>
+            </article>
+          ))
+        }
+      </div>
+      <p class="mt-4"><a class="caption text-accent hover:underline" href={PATHS.build}>More builds →</a></p>
+    </section>
+
+    <section class="min-w-0" aria-labelledby="yt">
+      <h2 id="yt" class="display max-w-2xl">I make videos about how it all works.</h2>
+      <p class="lede mt-5">
+        Databases, low-level design, system design and distributed systems, each one built from scratch on camera. Short clips most days, a longer video each week.
       </p>
-      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-        Each lesson comes with concepts, diagrams, examples, interview questions, and key takeaways, all in one place.
-      </p>
-      <p class="mt-4 max-w-[40rem] text-sm leading-relaxed text-muted">
-        Read before the lesson. Use while learning. Revisit before the interview.
+      <p class="mt-6 flex flex-wrap gap-2">
+        <a class="btn-primary" href={SITE.youtube} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
+        <a class="btn-ghost" href={PATHS.course}>See what's coming</a>
       </p>
       {
-        latestNotes.length > 0 ? (
-          <div class="mt-8 grid min-w-0 gap-4 md:grid-cols-3">
+        latestNotes.length > 0 && (
+          <div class="mt-10 grid min-w-0 gap-4 md:grid-cols-3">
             {latestNotes.map((note) => (
               <NoteCard
                 href={`/notes/${note.id}`}
-                kicker={`S${note.data.season} · ${note.data.seasonTitle}`}
+                kicker={note.data.seasonTitle}
                 title={note.data.topic}
                 description={note.data.description}
                 meta={formatDate(note.data.pubDate)}
               />
             ))}
           </div>
-        ) : (
-          <div class="card mt-8 px-6 py-10">
-            <p class="title text-ink">Notes coming soon.</p>
-            <p class="mt-2 text-sm leading-relaxed text-muted">
-              Study sheets for the course. Nothing published yet. Notes for this topic after the Build ships.
-            </p>
-          </div>
         )
       }
     </section>
 
-    {
-      featured && (
-        <section class="min-w-0">
-          <p class="section-kicker">03 / Build</p>
-          <h2 class="title mt-4">Turn the Idea Into Code.</h2>
-          <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-            This is where theory gets tested.
-          </p>
-          <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-            Take a concept. Write the code. Run it. Break it. Understand why it broke.
-          </p>
-          <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-            The builds are small enough to understand and practical enough to run.
-          </p>
-          <a href={featuredHref} class="card card-hover mt-8 grid min-w-0 no-underline lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
-            <div class="diagram-frame border-b border-line bg-[var(--canvas)] p-4 sm:p-5 lg:border-r lg:border-b-0">
-              <PermissionDiagram />
-            </div>
-            <div class="min-w-0 p-6 sm:p-8">
-              <p class="caption text-accent">Featured Build</p>
-              <h3 class="title mt-3 text-ink">Engine · Permission Engine</h3>
-              <p class="mt-3 text-sm leading-relaxed text-muted">
-                A Java 17 Role-Based Access Control (RBAC) engine built around bitmasks.
-              </p>
-              <p class="mt-3 text-sm leading-relaxed text-muted">Permissions become bits.</p>
-              <p class="mt-4 font-mono text-xs leading-6 text-ink">
-                Check → AND
-                <br />
-                Grant → OR
-                <br />
-                Revoke → AND-NOT
-              </p>
-              <p class="mt-4 text-sm leading-relaxed text-muted">
-                Pairs with the bitwise class. The Build video is not up yet.
-              </p>
-              <p class="mt-4 text-sm leading-relaxed text-muted">
-                A small build.
-                <br />
-                A fundamental idea.
-                <br />
-                One more concept that makes sense.
-              </p>
-              <p class="mt-6 font-mono text-xs text-accent">Explore the build →</p>
-            </div>
-          </a>
-        </section>
-      )
-    }
-
-    <section class="min-w-0">
-      <p class="section-kicker">Why I’m Building This</p>
-      <h2 class="title mt-4">Computer Science content is everywhere.</h2>
-      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-        Courses. Cheat sheets. Interview playlists. Tutorials.
+    <section id="contact" class="min-w-0 scroll-mt-24" aria-labelledby="hello">
+      <h2 id="hello" class="display max-w-2xl">Say hello.</h2>
+      <p class="lede mt-5">Working on something interesting, or just curious? I read everything. Email is fastest.</p>
+      <p class="mt-6 flex flex-wrap items-center gap-3">
+        <a class="btn-primary" href={`mailto:${SITE.email}`}>Email me</a>
+        <a class="btn-ghost" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn-ghost" href={SITE.x} target="_blank" rel="noopener noreferrer">X</a>
+        <a class="btn-ghost" href="/resume.pdf">Resume (PDF)</a>
       </p>
-      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-        But learning the pieces doesn’t always mean understanding how they connect.
-      </p>
-      <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-ink">That’s what I’m building here.</p>
-      <p class="mt-6 font-mono text-sm leading-7 text-muted">
-        Learn the concept.
-        <br />
-        Understand the why.
-        <br />
-        Solve the problem.
-        <br />
-        Build.
-        <br />
-        Repeat.
-      </p>
-    </section>
-
-    <section class="card min-w-0 px-6 py-10 sm:px-8 sm:py-12">
-      <p class="section-kicker">Your path</p>
-      <h2 class="display mt-5 max-w-2xl">Your CS Learning Path Starts Here.</h2>
-      <p class="lede mt-5">
-        Built for Computer Science students, software engineers, backend developers, and interview candidates who want stronger fundamentals and a deeper understanding of how software and systems work.
-      </p>
-      <p class="mt-6 text-[1.02rem] leading-relaxed text-muted">
-        Learn the class. Explore the notes. Build the concepts.
-      </p>
-      <p class="mt-3 text-[1.02rem] leading-relaxed text-ink">Welcome to the course.</p>
-      <div class="mt-8 flex flex-wrap gap-2">
-        <a class="btn-primary" href={PATHS.course}>The roadmap</a>
-        <a class="btn-ghost" href={watchHref} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
-      </div>
+      <p class="mt-4 select-all font-mono text-xs text-muted">{SITE.email}</p>
     </section>
   </div>
 </PageLayout>

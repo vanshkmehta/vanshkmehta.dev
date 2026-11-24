@@ -6,14 +6,13 @@ import PageLayout from "../layouts/PageLayout.astro";
 <PageLayout title="Not found" description="No page at this address.">
   <section class="wrap py-24">
     <p class="caption text-accent">404</p>
-    <h1 class="display mt-4">No such address.</h1>
-    <div class="rule-cyan mt-5"></div>
-    <p class="lede mt-6">Nothing here. Try home, class, notes, or build.</p>
+    <h1 class="display mt-4">That page does not exist.</h1>
+    <p class="lede mt-6">Try the home page, the video seasons, notes or builds.</p>
     <p class="mt-8 flex flex-wrap gap-4 font-mono text-sm">
       <a class="text-accent hover:underline" href="/">Home</a>
-      <a class="text-accent hover:underline" href={PATHS.course}>Class</a>
+      <a class="text-accent hover:underline" href={PATHS.course}>Seasons</a>
       <a class="text-accent hover:underline" href={PATHS.notes}>Notes</a>
-      <a class="text-accent hover:underline" href={PATHS.build}>Build</a>
+      <a class="text-accent hover:underline" href={PATHS.build}>Builds</a>
     </p>
   </section>
 </PageLayout>

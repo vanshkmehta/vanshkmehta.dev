@@ -1,53 +1,69 @@
 ---
-import SeasonCard from "../../components/SeasonCard.astro";
-import { curriculumTotals, featuredClass, seasons } from "../../data/seasons";
+import { SITE } from "../../data/site";
 import PageLayout from "../../layouts/PageLayout.astro";
 
-const filming = seasons.find((s) => s.status === "filming");
-const latestClass = featuredClass();
-const totals = curriculumTotals();
-const description = `${totals.seasons} seasons, ${totals.topics} topics, ${totals.episodes} episodes. One connected journey through Computer Science, from memory and low-level programming through operating systems, networks, and architecture to machine learning.`;
+const seasons = [
+  {
+    code: "S1",
+    title: "Databases",
+    when: "Dec to Jan",
+    text: "SQL window functions, indexes and EXPLAIN, isolation anomalies, MVCC and locking, a key-value store with a write-ahead log, Redis cache patterns, Mongo against Postgres.",
+  },
+  {
+    code: "S2",
+    title: "Low-level design",
+    when: "Feb to Mar",
+    text: "SOLID, the core patterns, parking lot, rate limiter, BookMyShow, Splitwise, elevator, and Java concurrency.",
+  },
+  {
+    code: "S3",
+    title: "System design",
+    when: "Apr to May",
+    text: "URL shortener, distributed rate limiter, news feed, chat, notifications, consistent hashing, load balancer.",
+  },
+  {
+    code: "S4",
+    title: "Distributed systems, Kafka and AWS",
+    when: "Jun to Aug",
+    text: "Job queue with a dead-letter queue, a mini Kafka, the outbox pattern, sagas, leader election and Raft, and a capstone deployed on AWS.",
+  },
+  {
+    code: "S5",
+    title: "Python and AI",
+    when: "Sep onward",
+    text: "Python fast track, embeddings, a RAG service and model serving.",
+  },
+] as const;
 ---
 
 <PageLayout
-  title="The Roadmap"
-  description={description}
+  title="Video seasons"
+  description="What I'm making on YouTube next: databases, low-level design, system design, distributed systems, and AI. Each episode comes with code you can run."
 >
   <section class="wrap page-head">
-    <p class="section-kicker">The Roadmap</p>
-    <h1 class="display mt-5 max-w-2xl">{totals.seasons} seasons. One connected journey.</h1>
-    <div class="rule-cyan mt-5"></div>
+    <h1 class="display max-w-2xl">What I'm making next</h1>
     <p class="lede mt-6">
-      Computer Science is not a collection of isolated subjects.
+      Each season is a handful of long videos, and each video has a repo you can run. Short clips go out most days, a longer video every week from December.
     </p>
-    <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-      A data structure connects to memory. An operating system connects to processes and memory. A network connects to operating systems. A distributed system builds on networks, storage, concurrency, and failure.
+    <p class="mt-6">
+      <a class="btn-primary" href={SITE.youtube} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
     </p>
-    <p class="mt-4 max-w-[40rem] text-[1.02rem] leading-relaxed text-muted">
-      So the course is structured as a connected path, not a pile of playlists.
-    </p>
-    <p class="mt-5 font-mono text-xs text-faint">
-      {totals.topics} topics · {totals.episodes} episodes
-    </p>
-    {
-      filming && (
-        <p class="mt-5 font-mono text-xs text-accent">
-          Now filming {filming.code}: {filming.title}
-          {latestClass ? ` · ${latestClass.episode.id} live` : ""}
-        </p>
-      )
-    }
   </section>
 
-  <section class="wrap pb-16 md:pb-20">
-    <ol class="grid min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <section class="wrap pb-16 md:pb-24">
+    <ol class="min-w-0 border-t-2 border-ink">
       {
-        seasons.map((season) => (
-          <li class="min-w-0">
-            <SeasonCard season={season} />
+        seasons.map((s) => (
+          <li class="grid min-w-0 gap-2 border-b border-line py-6 md:grid-cols-[7rem_minmax(0,16rem)_minmax(0,1fr)] md:gap-8">
+            <p class="caption text-accent">{s.code} · {s.when}</p>
+            <h2 class="title">{s.title}</h2>
+            <p class="text-[1.02rem] leading-relaxed text-muted">{s.text}</p>
           </li>
         ))
       }
     </ol>
+    <p class="mt-6 max-w-[40rem] text-sm leading-relaxed text-muted">
+      Dates will move if a video needs more time. I'd rather get one right than ship two rushed.
+    </p>
   </section>
 </PageLayout>

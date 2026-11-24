@@ -1,14 +1,19 @@
 @import "@fontsource-variable/inter/wght.css";
-@import "@fontsource/jetbrains-mono/latin-400.css";
-@import "@fontsource/jetbrains-mono/latin-500.css";
-@import "@fontsource/jetbrains-mono/latin-700.css";
+@import "@fontsource/dm-mono/latin-400";
+@import "@fontsource/dm-mono/latin-500";
+@import "@fontsource/big-shoulders-display/latin-800";
+@import "@fontsource/big-shoulders-display/latin-900";
+@import "@fontsource/instrument-serif/latin-400";
+@import "@fontsource/instrument-serif/latin-400-italic";
 @import "tailwindcss";
 
 @custom-variant light (&:where(.light, .light *));
 
 @theme inline {
   --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, serif;
   --color-canvas: var(--canvas);
   --color-canvas-elevated: var(--canvas-elevated);
   --color-ink: var(--ink);
@@ -24,41 +29,43 @@
   --color-mint-soft: var(--mint-soft);
 }
 
-/* Vault: matte navy #101B31, cyan #35C6D2, warm off-white #F6F3EA */
+/* Poster: chalk paper, ink black, one electric blue. Dark is the same system inverted. */
 :root {
   color-scheme: dark;
-  --canvas: #101b31;
-  --canvas-elevated: color-mix(in srgb, #101b31 80%, #f6f3ea 20%);
-  --ink: #f6f3ea;
-  --muted: color-mix(in srgb, #f6f3ea 76%, #101b31 24%);
-  --faint: color-mix(in srgb, #f6f3ea 52%, #101b31 48%);
-  --line: color-mix(in srgb, #35c6d2 24%, #101b31 76%);
-  --accent: #35c6d2;
-  --accent-fg: #101b31;
-  --accent-soft: color-mix(in srgb, #35c6d2 16%, transparent);
+  --canvas: #0e0e0e;
+  --canvas-elevated: #191918;
+  --ink: #ecebe6;
+  --muted: color-mix(in srgb, #ecebe6 74%, #0e0e0e 26%);
+  --faint: color-mix(in srgb, #ecebe6 52%, #0e0e0e 48%);
+  --line: color-mix(in srgb, #ecebe6 20%, #0e0e0e 80%);
+  --accent: #8793ff;
+  --accent-fg: #0e0e0e;
+  --accent-soft: color-mix(in srgb, #8793ff 16%, transparent);
   --gold: #e7b34e;
   --gold-soft: color-mix(in srgb, #e7b34e 16%, transparent);
   --mint: #69d5ad;
   --mint-soft: color-mix(in srgb, #69d5ad 16%, transparent);
-  --grid-dot: color-mix(in srgb, #35c6d2 18%, transparent);
+  --grid-dot: transparent;
+  --paper: #f4f1e8;
+  --paper-ink: #201f1c;
 }
 
 html.light {
   color-scheme: light;
-  --canvas: #f6f3ea;
-  --canvas-elevated: color-mix(in srgb, #f6f3ea 72%, #ffffff 28%);
-  --ink: #101b31;
-  --muted: color-mix(in srgb, #101b31 72%, #f6f3ea 28%);
-  --faint: color-mix(in srgb, #101b31 50%, #f6f3ea 50%);
-  --line: color-mix(in srgb, #101b31 22%, #f6f3ea 78%);
-  --accent: #35c6d2;
-  --accent-fg: #101b31;
-  --accent-soft: color-mix(in srgb, #35c6d2 16%, transparent);
-  --gold: #e7b34e;
-  --gold-soft: color-mix(in srgb, #e7b34e 16%, transparent);
-  --mint: #69d5ad;
-  --mint-soft: color-mix(in srgb, #69d5ad 16%, transparent);
-  --grid-dot: color-mix(in srgb, #35c6d2 18%, transparent);
+  --canvas: #ecebe6;
+  --canvas-elevated: #f6f5f1;
+  --ink: #0e0e0e;
+  --muted: color-mix(in srgb, #0e0e0e 70%, #ecebe6 30%);
+  --faint: color-mix(in srgb, #0e0e0e 50%, #ecebe6 50%);
+  --line: color-mix(in srgb, #0e0e0e 18%, #ecebe6 82%);
+  --accent: #2b3dff;
+  --accent-fg: #ffffff;
+  --accent-soft: color-mix(in srgb, #2b3dff 10%, transparent);
+  --gold: #b97d00;
+  --gold-soft: color-mix(in srgb, #e7b34e 20%, transparent);
+  --mint: #1f8f6a;
+  --mint-soft: color-mix(in srgb, #69d5ad 22%, transparent);
+  --grid-dot: transparent;
 }
 
 @layer base {
@@ -174,10 +181,11 @@ html.light .hero-atmosphere {
 }
 
 .display {
-  font-size: clamp(1.7rem, 1.2rem + 2.1vw, 2.5rem);
-  font-weight: 560;
-  letter-spacing: -0.032em;
-  line-height: 1.22;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 1.3rem + 2.8vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
   text-wrap: balance;
 }
 
@@ -237,19 +245,6 @@ html.light .hero-atmosphere {
   color: var(--faint);
 }
 
-.section-kicker::before {
-  content: "";
-  width: 1.5rem;
-  height: 1px;
-  background: var(--accent);
-}
-
-.section-kicker::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-  background: var(--line);
-}
 
 .prose-note {
   min-width: 0;
@@ -472,12 +467,6 @@ html.light .prose-note .astro-code span {
   color: var(--accent);
 }
 
-.rule-cyan {
-  width: 2.5rem;
-  height: 2px;
-  background: var(--accent);
-}
-
 .diagram-frame {
   min-width: 0;
   overflow: hidden;
@@ -488,4 +477,147 @@ html.light .prose-note .astro-code span {
   width: 100%;
   height: auto;
   max-width: 100%;
+}
+
+.poster-word {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.82;
+  letter-spacing: -0.01em;
+  font-size: clamp(5.5rem, 24vw, 19rem);
+  margin: 0;
+}
+
+.poster-word .outline {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink);
+}
+
+.index-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.2rem);
+  line-height: 1.1;
+}
+
+.index-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 2px solid var(--ink);
+  padding: 0.5rem 0;
+  color: var(--ink);
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease, padding 160ms ease;
+}
+
+.index-list a:hover {
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding-inline: 0.7rem;
+}
+
+.ticker {
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--ink);
+  color: var(--canvas);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.06em;
+  padding-block: 0.7rem;
+}
+
+.ticker > div {
+  display: inline-block;
+  animation: tick 34s linear infinite;
+}
+
+@keyframes tick {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sticker {
+  display: grid;
+  place-items: center;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 9999px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding: 0.9rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.25;
+  animation: spin 18s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.receipt {
+  --notch: 8px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.65;
+  padding: 1.4rem 1.25rem 2.1rem;
+  width: 100%;
+  max-width: 21.5rem;
+  -webkit-mask:
+    linear-gradient(#000, #000) top / 100% calc(100% - var(--notch)) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 16px var(--notch) repeat-x;
+  mask:
+    linear-gradient(#000, #000) top / 100% calc(100% - var(--notch)) no-repeat,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 16px var(--notch) repeat-x;
+}
+
+.receipt .dl {
+  border-top: 1px dashed color-mix(in srgb, var(--paper-ink) 45%, transparent);
+  margin-block: 0.55rem;
+}
+
+.receipt .it {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.receipt .ct {
+  text-align: center;
+  color: color-mix(in srgb, var(--paper-ink) 62%, transparent);
+}
+
+.receipt .bar {
+  height: 2.1rem;
+  margin-top: 0.8rem;
+  background: repeating-linear-gradient(90deg, var(--paper-ink) 0 2px, transparent 2px 4px, var(--paper-ink) 4px 5px, transparent 5px 8px, var(--paper-ink) 8px 11px, transparent 11px 12px);
+}
+
+.receipt svg.qr {
+  display: block;
+  width: 6rem;
+  height: 6rem;
+  margin: 0.8rem auto 0.3rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker > div,
+  .sticker {
+    animation: none;
+  }
 }

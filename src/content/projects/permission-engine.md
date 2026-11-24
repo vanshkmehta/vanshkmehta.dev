@@ -19,7 +19,7 @@ interfaceNote: "No UI. Curl and a terminal."
 
 Access control often grows a table: users, roles, permissions, join rows, a cache, then a mismatch. For a small, closed set of actions, that is the wrong shape. The question is binary. The set is tiny. Store it as bits.
 
-This is the Season 1 build for bitwise manipulation. Take the bitwise algebra and put a process around it. It pairs with the live bitwise class. The Build video is not up yet.
+I built this to see how far plain bitwise operations can go before you need a database.
 
 ## Decisions
 
@@ -38,4 +38,4 @@ curl -s localhost:8080/check \
 
 ## Status
 
-Curriculum build. Code is not public yet.
+Code is not public yet.

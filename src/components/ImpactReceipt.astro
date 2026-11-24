@@ -1,0 +1,35 @@
+---
+import { PROFILE } from "../data/profile";
+import { SITE } from "../data/site";
+import QRCode from "qrcode";
+
+const qr = await QRCode.toString(SITE.url + "/about", {
+  type: "svg",
+  margin: 0,
+  errorCorrectionLevel: "M",
+  color: { dark: "#201f1c", light: "#0000" },
+});
+---
+
+<article class="receipt" aria-label="What Vansh built at Jio">
+  <h3 class="text-center text-[0.9rem] font-medium tracking-[0.14em]">VANSH MEHTA</h3>
+  <div class="ct">BACKEND ENGINEER · JIO</div>
+  <div class="dl"></div>
+  <div class="ct">WHAT I BUILT · DEC 2023 TO NOW</div>
+  <div class="dl"></div>
+  {
+    PROFILE.receipt.map((r) => (
+      <div class="it">
+        <span>{r.item}</span>
+        <span class="shrink-0 text-right font-medium">{r.result}</span>
+      </div>
+    ))
+  }
+  <div class="dl"></div>
+  <div class="it text-[0.85rem] font-medium"><span>PLATFORM SCALE</span><span>100K+ USERS</span></div>
+  <div class="dl"></div>
+  <div class="ct">STAR PERFORMER, BEST DEBUTANT</div>
+  <div set:html={qr.replace("<svg", '<svg class="qr" role="img" aria-label="QR code to the about page"')} />
+  <div class="ct">SCAN FOR THE LONG VERSION</div>
+  <div class="bar" aria-hidden="true"></div>
+</article>
